@@ -1,0 +1,33 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body ng-app="insurance_crm.demo">
+
+    {% verbatim %}
+    <div ng-controller="InsuranceCrmController">
+        {{ client.name }} status is {{ client.status }} .
+
+    </div>
+    {% endverbatim %}
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.js"></script>
+    <script>
+        (function(){
+            'use strict';
+            angular.module('insurance_crm.demo', [])
+                .controller('InsuranceCrmController', ['$scope', InsuranceCrmController]);
+
+            function InsuranceCrmController($scope) {
+                $scope.client = {
+                    name: 'Joe',
+                    status: 'bla'
+                };
+            }
+
+        }());
+    </script>
+
+</body>
+</html>
