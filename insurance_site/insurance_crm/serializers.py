@@ -11,6 +11,8 @@ class ClientSerializer(serializers.ModelSerializer):
 
 class AgentSerializer(serializers.ModelSerializer):
 
+    clients = ClientSerializer(read_only=True, many=True)
+
     class Meta:
         fields = '__all__'
         model = Agent
