@@ -22,8 +22,8 @@ class Client(models.Model):
     notes = models.TextField(blank=True, null=True)
     agent = models.ForeignKey(Agent, related_name="clients")
     status = models.CharField(max_length=50, null=True)
-    signed_file_path = models.TextField(blank=True)
-    phone_number = models.CharField(max_length=50)
+    signed_file_path = models.TextField(blank=True, null=True)
+    phone_number = models.CharField(max_length=50, null=True)
 
     def __str__(self):
         return "Client: {}".format(self.name)
