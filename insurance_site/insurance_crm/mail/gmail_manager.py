@@ -86,14 +86,14 @@ def get_mail_details(mails):
     for mail in mails:
         for header in mail["payload"]["headers"]:
             if header["name"] == "To" and "+" in header["value"]:
-                details["customer_id"] = header["value"].split("+")[1].split("@")[0].replace("_", " ")
+                details["customer_name"] = header["value"].split("+")[1].split("@")[0].replace("_", " ")
             if header["name"] == "From":
                 if "<" in header["value"]:
-                    details["company"] = header["value"].split("<")[1][:-1]
+                    details["company_email"] = header["value"].split("<")[1][:-1]
                 else:
-                    details["company"] = header["value"]
+                    details["company_email"] = header["value"]
 
-    if set(("customer_id", "company")) == set(details):
+    if set(("customer_name", "company_email")) == set(details):
         return details
 
 def set_thread_as_read(thread):
@@ -108,9 +108,9 @@ def send_mail(mail_from, message):
 
 #####need to check this
 def get_attachments_for_message(mails):
-    #attachment = None
     attachments = []
     for mail in mails:
+        attachments_for_mail = []
         if not mail["payload"].has_key("parts"):
             continue
         for part in mail["payload"]["parts"]:
@@ -122,7 +122,8 @@ def get_attachments_for_message(mails):
                         userId="me", messageId=mail["id"],id=part["body"]["attachmentId"]).execute()
                     attachment = response["data"]
                 decoded_attachment = base64.urlsafe_b64decode(attachment.encode("UTF-8"))
-                attachments.append(decoded_attachment)
+                attachments_for_mail.append(decoded_attachment)
+        attachments.append((mail,attachments_for_mail))
     return attachments
 
 get_service()

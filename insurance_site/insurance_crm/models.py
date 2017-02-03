@@ -23,6 +23,7 @@ class Client(models.Model):
     agent = models.ForeignKey(Agent, related_name="clients")
     status = models.CharField(max_length=50, null=True)
     signed_file_path = models.TextField(blank=True)
+    phone_number = models.CharField(max_length=50)
 
     def __str__(self):
         return "Client: {}".format(self.name)
@@ -36,11 +37,19 @@ class InsuranceCompany(models.Model):
         return "Insurance company: {}".format(self.name)
 
 @python_2_unicode_compatible
-class ResponseMails(models.Model):
-    customer_id = models.ForeignKey(Client, related_name="identification_number")
+class ResponseMail(models.Model):
+    customer = models.ForeignKey(Client, related_name="identification_number")
     insurance_company = models.ForeignKey(InsuranceCompany, related_name="number")
-    mails = models.TextField(max_length=50)
-    attachments = models.TextField(max_length=50)
+    mail = models.TextField(max_length=50)
 
     def __str__(self):
-        return "ResponseMails: {}".format(self.name)
+        return "ResponseMails: {}".format(self.id)
+
+@python_2_unicode_compatible
+class Attachment(models.Model):
+    response_mail = models.ForeignKey(ResponseMail, related_name="attachment_ids")
+    attachment = models.TextField(max_length=50)
+
+    def __str__(self):
+        return "Attachment: {}".format(self.id)
+
