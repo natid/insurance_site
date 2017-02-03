@@ -1,7 +1,9 @@
 from .api import ClientViewSet, AgentViewSet
 from rest_framework.routers import DefaultRouter
 from views import send_cellosign_request, run_mail_scanner
-from django.conf.urls import url
+from django.conf.urls import url, include
+import views
+
 
 router = DefaultRouter()
 router.register(r'clients', ClientViewSet)
