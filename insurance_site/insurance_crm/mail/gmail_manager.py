@@ -126,4 +126,4 @@ def get_attachments_for_message(mails):
         attachments.append((mail,attachments_for_mail))
     return attachments
 
-get_service()
+#get_service()

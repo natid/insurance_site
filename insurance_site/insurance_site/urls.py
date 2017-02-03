@@ -20,5 +20,6 @@ from django.views.generic import TemplateView
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', TemplateView.as_view(template_name="insurance_crm/home.html")),
+    url(r'^client', TemplateView.as_view(template_name="insurance_crm/client.html")),
     url(r'^insurance_crm/', include('insurance_crm.urls')),
 ]

@@ -13,7 +13,7 @@
         <div ng-repeat="agent in data">
             <h3>{{agent.name}}</h3>
             <ul>
-                <li ng-repeat="client in agent.clients">{{ client.name }}</li>
+                <li ng-repeat="client in agent.clients"><a href="client/{{client.id}}">{{ client.name }}</a></li>
             </ul>
             <input type="text" ng-model="new_client"/>
             <button ng-click="add(agent, new_client)">+</button>
