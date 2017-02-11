@@ -1,0 +1,20 @@
+<div class="client" ng-hide="edit" ng-click="edit=true">
+    <h4>{{ client.name }}</h4>
+    <span class="email">{{ client.email }}</span>
+</div>
+
+<div class="client" ng-show="edit" ng-model-options="modelOptions">
+    <div class="flex">
+        <label><strong>Name</strong></label>
+        <input type="text"
+               ng-model="client.name"
+               ng-change="update()" />
+    </div>
+    <textarea ng-model="client.email"
+              ng-change="update()"
+              placeholder="Enter email.."></textarea>
+
+    <button ng-click="edit=false">Close</button>
+    <button ng-click="delete()">Delete Client</button>
+
+</div>
