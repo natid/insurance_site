@@ -13,7 +13,7 @@
                 controller: 'InsuranceCrmController',
             })
             .when('/login', {
-                templateUrl: '/static/html/login.html',
+                templateUrl: '/static/html/login2.html',
                 controller: 'LoginController'
             })
             .otherwise('/');
