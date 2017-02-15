@@ -17,6 +17,19 @@
                 });
         }
 
+        $scope.signup = function() {
+            Login.signup($scope.user)
+                .then(function () {
+                    $scope.login = "true";
+                    $scope.login_after_signup = "User created successfully! You are ready to login.";
+                },
+                function (err) {
+                    if (err.status === 409 ) {
+                        $scope.login_error="User already exists";
+                    }
+                });
+        }
+
         if (Login.isLoggedIn()) {
             $location.url('/');
         }

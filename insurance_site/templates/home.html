@@ -7,11 +7,12 @@
 
 </head>
 <body ng-app="insurance_crm.demo">
-    <ng-view></ng-view>
+    <ui-view></ui-view>
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-route.js"></script>
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-route.js"></script>-->
+    <script src="//unpkg.com/angular-ui-router@0.3.2/release/angular-ui-router.js"></script>
     <script src="{% static "js/insurance_crm.js" %}"></script>
     <script src="{% static "js/insurance_crm.config.js" %}"></script>
     <script src="{% static "js/login.controller.js" %}"></script>

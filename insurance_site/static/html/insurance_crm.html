@@ -2,7 +2,7 @@
     <button ng-click="logout()">Logout</button>
 </div>
 <div ng-repeat="agent in data">
-    <h3 ng-bind="agent.name" ></h3>
+    <h3 ng-bind="(agent.first_name) + ' ' + (agent.last_name)" ></h3>
     <ul>
         <li ng-repeat="client in agent.clients">
             <crm-client></crm-client>

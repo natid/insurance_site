@@ -2,21 +2,40 @@
     'use strict';
 
     angular.module('insurance_crm.demo')
-        .config(['$routeProvider', config])
+        .config(['$stateProvider', '$urlRouterProvider', config])
         .run(['$http', run]);
 
-    function config($routeProvider) {
+    function config($stateProvider, $urlRouterProvider) {
 
-        $routeProvider
-            .when('/', {
-                templateUrl: '/static/html/insurance_crm.html',
-                controller: 'InsuranceCrmController',
-            })
-            .when('/login', {
-                templateUrl: '/static/html/login2.html',
-                controller: 'LoginController'
-            })
-            .otherwise('/');
+        var insuranceState = {
+            name: 'insurance',
+            url: '/insurance',
+            templateUrl: '/static/html/insurance_crm.html',
+            controller: 'InsuranceCrmController'
+          }
+
+          var loginState = {
+            name: 'login',
+            url: '/login',
+            templateUrl: '/static/html/login2.html',
+            controller: 'LoginController'
+          }
+
+          $stateProvider.state(insuranceState);
+          $stateProvider.state(loginState);
+          $urlRouterProvider.otherwise('/login');
+
+
+//        $routeProvider
+//            .when('/', {
+//                templateUrl: '/static/html/insurance_crm.html',
+//                controller: 'InsuranceCrmController',
+//            })
+//            .when('/login', {
+//                templateUrl: '/static/html/login2.html',
+//                controller: 'LoginController'
+//            })
+//            .otherwise('/');
     }
 
     function run($http) {

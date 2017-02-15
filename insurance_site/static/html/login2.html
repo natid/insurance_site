@@ -1,29 +1,30 @@
 <div class="form">
 
       <ul class="tab-group">
-          <button ng-click="login=false;signup=true">Sign Up</button>
-          <button ng-click="signup=false;login=true">Log In</button>
+          <button ng-click="login=false">Sign Up</button>
+          <button ng-click="login=true">Log In</button>
       </ul>
 
       <div class="tab-content">
-        <div ng-show="signup" id="signup">
+        <div ng-show="!login" id="signup">
+            <div ng-bind="login_error"></div>
           <h1>Sign Up for Free</h1>
 
-          <form action="/" method="post">
+          <form ng-submit="signup()">
 
           <div class="top-row">
             <div class="field-wrap">
               <label>
                 First Name<span class="req">*</span>
               </label>
-              <input type="text" required autocomplete="off" />
+              <input type="text" required autocomplete="off" ng-model="user.first_name"/>
             </div>
 
             <div class="field-wrap">
               <label>
                 Last Name<span class="req">*</span>
               </label>
-              <input type="text" required autocomplete="off"/>
+              <input type="text" required autocomplete="off" ng-model="user.last_name"/>
             </div>
           </div>
 
@@ -31,7 +32,7 @@
             <label>
               Email Address<span class="req">*</span>
             </label>
-            <input type="email" required autocomplete="off"/>
+            <input type="email" required autocomplete="off" ng-model="user.email_address"/>
           </div>
 
 
@@ -39,14 +40,14 @@
             <label>
               Phone Number<span class="req">*</span>
             </label>
-            <input type="text" required autocomplete="off"/>
+            <input type="text" required autocomplete="off" ng-model="user.phone_number"/>
           </div>
 
               <div class="field-wrap">
             <label>
               License Number<span class="req">*</span>
             </label>
-            <input type="text" required autocomplete="off"/>
+            <input type="text" required autocomplete="off" ng-model="user.license_number"/>
           </div>
 
 
@@ -55,7 +56,7 @@
             <label>
               Set Password<span class="req">*</span>
             </label>
-            <input type="password" required autocomplete="off"/>
+            <input type="password" required autocomplete="off" ng-model="user.password"/>
           </div>
 
           <button type="submit" class="button button-block">Get Started</button>
@@ -66,6 +67,7 @@
 
         <div ng-show="login" id="login">
             <div ng-bind="login_error"></div>
+            <div ng-bind="login_after_signup"></div>
             <h1>Welcome Back!</h1>
 
             <form ng-submit="login()">
@@ -73,14 +75,14 @@
                         <label>
                           Email Address<span class="req">*</span>
                         </label>
-                        <input type="email" required autocomplete="off"/>
+                        <input type="email" required autocomplete="off" ng-model="user.username"/>
                 </div>
 
               <div class="field-wrap">
                   <label>
                     Password<span class="req">*</span>
                   </label>
-                  <input type="password" required autocomplete="off"/>
+                  <input type="password" required autocomplete="off" ng-model="user.password"/>
               </div>
 
               <p class="forgot"><a href="#">Forgot Password?</a></p>

@@ -1,6 +1,6 @@
 (function(){
     'use strict';
-    angular.module('insurance_crm.demo', ['ngRoute'])
+    angular.module('insurance_crm.demo', ['ui.router'])
         .controller('InsuranceCrmController', ['$scope', '$http', 'Login', InsuranceCrmController]);
 
     function InsuranceCrmController($scope, $http, Login) {
