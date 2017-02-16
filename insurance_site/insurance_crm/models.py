@@ -22,7 +22,6 @@ class Client(models.Model):
     notes = models.TextField(blank=True, null=True)
     agent = models.ForeignKey(Agent, related_name="clients")
     status = models.CharField(max_length=50, null=True)
-    signed_file_path = models.TextField(blank=True, null=True)
     phone_number = models.CharField(max_length=50, null=True)
 
     def __str__(self):
@@ -48,8 +47,22 @@ class ResponseMail(models.Model):
 @python_2_unicode_compatible
 class Attachment(models.Model):
     response_mail = models.ForeignKey(ResponseMail, related_name="attachment_ids")
-    attachment = models.TextField(max_length=50)
+    attachment = models.TextField(max_length=50000)
 
     def __str__(self):
         return "Attachment: {}".format(self.id)
 
+@python_2_unicode_compatible
+class SignedPdf(models.Model):
+    customer = models.ForeignKey(Client, related_name="pdf_id")
+    pdf_file = models.TextField(max_length=50000)
+
+    def __str__(self):
+        return "Signed Pdf: {}".format(self.id)
+
+@python_2_unicode_compatible
+class Credentials(models.Model):
+    credentials_file = models.TextField(max_length=2000, null=True, blank=True)
+
+    def __str__(self):
+        return "credentials file"

@@ -8,6 +8,9 @@ SCOPES = 'https://www.googleapis.com/auth/gmail.modify'
 CLIENT_SECRET_FILE = 'client_secret.json'
 APPLICATION_NAME = 'Gmail API Python Quickstart'
 
+#the only path available in AWS lambda
+HOME_DIR = "/tmp"
+
 GMAIL_QUERY = "label=Inbox is:unread"
 
 MESSAGE_TITLE_TEMPLATE = " בקשה לקבלת מידע לפי חוזר הצירוף ללקוח {0} ת.ז. {1}"

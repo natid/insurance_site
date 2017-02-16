@@ -1,24 +1,20 @@
 {% load staticfiles %}
-<html lang="en">
+<html lang="en" ng-app="insurance_crm.demo">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
-<body ng-app="insurance_crm.demo">
+<body>
 
     {% verbatim %}
     <div ng-controller="ClientController">
-
-        <div ng-repeat="client in data">
             <h3>{{client.name}}</h3>
             <h3>{{client.id}}</h3>
-        </div>
 
     </div>
     {% endverbatim %}
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.js"></script>
-    <script src="{% static "insurance_crm/client.js" %}"></script>
-
+    <script src="{% static "insurance_crm/client.js" %}">    </script>
 </body>
 </html>

@@ -25,7 +25,7 @@ SECRET_KEY = 'bsfbf-i=dbbp-y6_5sl_^_s2cs3vm&0jefo*-4ooxu&iv!opq$'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['893fyxsnc0.execute-api.us-west-2.amazonaws.com', '127.0.0.1']
 
 
 # Application definition
@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'insurance_crm'
+    'insurance_crm',
+    'storages'
 ]
 
 MIDDLEWARE = [
@@ -77,14 +78,26 @@ WSGI_APPLICATION = 'insurance_site.wsgi.application'
 
 DATABASES = {
 
+    #LOCAL
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'insurance',
+    #     'USER': 'root',
+    #     'PASSWORD' : 'root',
+    #     'HOST' : 'localhost',
+    #     'PORT': '3306',
+    # },
+
+    #AMAZON RDS
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'insurance',
+        'ENGINE':'django.db.backends.mysql',
+        'NAME': 'insurance_db',
         'USER': 'root',
-        'PASSWORD': 'root',
-        'HOST': 'localhost',
+        'PASSWORD': 'killerman',
+        'HOST': 'insurance.cq6h3lgfbla6.us-west-2.rds.amazonaws.com',
         'PORT': '3306',
     }
+
 }
 
 
@@ -125,3 +138,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+AWS_STORAGE_BUCKET_NAME = "zappa.static-file-bucket"

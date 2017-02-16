@@ -12,29 +12,43 @@ from oauth2client import client
 from oauth2client import tools
 from oauth2client.file import Storage
 import httplib2
+from insurance_crm.dal import dal_django
 
+_credentials_loaded_from_db = False
+
+try:
+    import argparse
+    flags = tools.argparser.parse_args([])
+except ImportError:
+    flags = None
 
 def get_service():
-    credentials = get_credentials()
+    global _credentials_loaded_from_db
+
+    if (not _credentials_loaded_from_db):
+        dal_django.load_credentials_from_db(_get_credentials_path(config.HOME_DIR))
+        _credentials_loaded_from_db = True
+
+    credentials = get_credentials(config.HOME_DIR)
     http = credentials.authorize(httplib2.Http())
     return discovery.build('gmail', 'v1', http=http)
 
-def get_credentials():
-    home_dir = os.path.expanduser('~')
+def _get_credentials_path(home_dir):
     credential_dir = os.path.join(home_dir, '.credentials')
     if not os.path.exists(credential_dir):
         os.makedirs(credential_dir)
-    credential_path = os.path.join(credential_dir,'gmail-python-quickstart.json')
+    return os.path.join(credential_dir,'gmail-python-quickstart.json')
 
+def get_credentials(home_dir):
+    credential_path = _get_credentials_path(home_dir)
     store = Storage(credential_path)
     credentials = store.get()
     if not credentials or credentials.invalid:
         flow = client.flow_from_clientsecrets(config.CLIENT_SECRET_FILE, config.SCOPES)
         flow.user_agent = config.APPLICATION_NAME
-        credentials = tools.run_flow(flow, store, None)
+        credentials = tools.run_flow(flow, store, flags)
+        dal_django.store_credentials_to_db(credential_path)
     return credentials
-
-
 
 def create_message(sender, to, subject, message_text):
   message = MIMEText(message_text)
@@ -58,11 +72,9 @@ def create_message_with_attachment(sender, to, subject, message_text, file):
     if content_type is None or encoding is not None:
         content_type = 'application/octet-stream'
     main_type, sub_type = content_type.split('/', 1)
-    fp = open(file, 'rb')
     msg = MIMEBase(main_type, sub_type)
-    msg.set_payload(fp.read())
-    fp.close()
-    filename = os.path.basename(file)
+    msg.set_payload(file)
+    filename = "signed_pdf.pdf"
     msg.add_header('Content-Disposition', 'attachment', filename=filename)
     message.attach(msg)
 

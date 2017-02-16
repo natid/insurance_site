@@ -1,0 +1,8 @@
+{
+    "dev": {
+        "django_settings": "insurance_site.settings", 
+        "s3_bucket": "zappa-lunzmj0hb",
+        "aws_region": "us-west-2",
+        "use_precompiled_packages": true
+    }
+}
