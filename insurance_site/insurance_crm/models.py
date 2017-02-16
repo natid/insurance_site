@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
 from django.utils.encoding import python_2_unicode_compatible
+from django.contrib.auth.models import User
 
 from django.db import models
 
@@ -7,13 +8,14 @@ from django.db import models
 
 @python_2_unicode_compatible
 class Agent(models.Model):
-    name = models.CharField(max_length=50)
-    email = models.CharField(max_length=50)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
     phone_number = models.CharField(max_length=50)
     license_number = models.CharField(max_length=50)
 
     def __str__(self):
-        return "Agent: {}".format(self.name)
+        return "Agent: {} {}".format(self.first_name, self.last_name)
 
 @python_2_unicode_compatible
 class Client(models.Model):

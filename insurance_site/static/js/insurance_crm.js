@@ -1,9 +1,9 @@
 (function(){
     'use strict';
-    angular.module('insurance_crm.demo', [])
-        .controller('InsuranceCrmController', ['$scope', '$http', InsuranceCrmController]);
+    angular.module('insurance_crm.demo', ['ui.router'])
+        .controller('InsuranceCrmController', ['$scope', '$http', 'Login', InsuranceCrmController]);
 
-    function InsuranceCrmController($scope, $http) {
+    function InsuranceCrmController($scope, $http, Login) {
         $scope.add = function (agent, client_name) {
             var n_client = {
                 agent: agent.id,
@@ -17,8 +17,12 @@
                     alert('could not create client');
                 });
         };
-        $scope.data = []
 
+
+        Login.redirectIfNotLoggedIn();
+        $scope.logout = Login.logout;
+
+        $scope.data = []
         $http.get('/insurance_crm/agents/').then(function(response){
             $scope.data = response.data;
         });
