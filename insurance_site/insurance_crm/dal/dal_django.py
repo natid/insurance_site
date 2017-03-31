@@ -10,7 +10,7 @@ def get_client_from_id(client_id):
     return Client.objects.get(id=client_id)
 
 def get_insurance_companies():
-    return InsuranceCompany.objects.get()
+    return InsuranceCompany.objects.all()
 
 def add_cellosign_pdf_response(customer, pdf_file):
     SignedPdf.objects.create(customer_id = customer.id, pdf_file = pdf_file)

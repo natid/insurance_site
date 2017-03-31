@@ -13,13 +13,13 @@ HOME_DIR = "/tmp"
 
 GMAIL_QUERY = "label=Inbox is:unread"
 
-MESSAGE_TITLE_TEMPLATE = " בקשה לקבלת מידע לפי חוזר הצירוף ללקוח {0} ת.ז. {1}"
+MESSAGE_TITLE_TEMPLATE = u" בקשה לקבלת מידע לפי חוזר הצירוף ללקוח {0} ת.ז. {1}"
 MESSAGE_BODY_TEMPLATE = """
 אנא שלחו הפרטים במייל חוזר
 פרטי בעל הרשיון:
-{agent_name}
-מספר רשיון {agent_license_number}
-טל' נייד: {agent_phone_number}
+{0}
+מספר רשיון {1}
+טל' נייד: {2}
 """
 
 CLIENT_INVITE_MESSAGE = "שלום כיתה א"

@@ -115,7 +115,7 @@ def get_mails_for_thread(thread):
     return get_service().users().threads().get(userId="me", id=thread["id"]).execute()["messages"]
 
 def send_mail(mail_from, message):
-    return (get_service().users().messages().send(userId=mail_from, body=message).execute())
+    return (get_service().users().messages().send(userId="me", body=message).execute())
 
 
 #####need to check this

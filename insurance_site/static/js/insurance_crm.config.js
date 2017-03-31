@@ -10,14 +10,14 @@
         var insuranceState = {
             name: 'insurance',
             url: '/insurance',
-            templateUrl: '/static/html/insurance_crm.html',
+            templateUrl: 'https://d3p5dvqck1wwt9.cloudfront.net/html/insurance_crm.html',
             controller: 'InsuranceCrmController'
           }
 
           var loginState = {
             name: 'login',
             url: '/login',
-            templateUrl: '/static/html/login2.html',
+            templateUrl: 'https://d3p5dvqck1wwt9.cloudfront.net/html/login2.html',
             controller: 'LoginController'
           }
 
