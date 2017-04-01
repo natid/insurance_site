@@ -45,6 +45,12 @@
             }
         ];
         vm.languages = {
+             he: {
+                'title'      : 'עברית',
+                'translation': 'TOOLBAR.HEBREW',
+                'code'       : 'עב',
+                'flag'       : 'il'
+            },
             en: {
                 'title'      : 'English',
                 'translation': 'TOOLBAR.ENGLISH',
@@ -74,6 +80,7 @@
         vm.toggleMsNavigationFolded = toggleMsNavigationFolded;
         vm.search = search;
         vm.searchResultClick = searchResultClick;
+        vm.goToMyProfile = goToMyProfile;
 
         //////////
 
@@ -91,6 +98,12 @@
             vm.selectedLanguage = vm.languages[$translate.preferredLanguage()];
         }
 
+
+
+       function goToMyProfile()
+       {
+            $state.go('app.my_profile')
+       }
 
         /**
          * Toggle sidenav
