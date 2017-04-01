@@ -20,7 +20,6 @@ class Agent(models.Model):
 @python_2_unicode_compatible
 class Client(models.Model):
     name = models.CharField(max_length=50)
-    email = models.CharField(max_length=50, null=True)
     notes = models.TextField(blank=True, null=True)
     agent = models.ForeignKey(Agent, related_name="clients")
     status = models.CharField(max_length=50, null=True)
