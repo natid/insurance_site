@@ -1,0 +1,77 @@
+<md-dialog dir="rtl" class="add-customer-dialog" aria-label="New Task">
+    <form name="customerForm" class="md-inline-form" novalidate>
+        <md-toolbar class="md-accent md-hue-2">
+            <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
+                <span class="title" translate="CUSTOMERS.ADD_NEW">לקוח חדש</span>
+                <md-button class="md-icon-button" ng-click="vm.closeDialog()">
+                    <md-icon md-font-icon="icon-close" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+
+        <md-dialog-content ms-scroll>
+            <md-input-container class="md-block">
+                <label translate="CUSTOMERS.NAME">שם</label>
+                <input name="name" ng-model="vm.customer.name" required md-autofocus>
+                <div ng-messages="customerForm.name.$error" ng-show="customerForm.name.$touched" role="alert">
+                    <div ng-message="required">
+                        <span translate="CUSTOMERS.ERRORS.REQUIRED_FILED">שדה חובה</span>
+                    </div>
+                </div>
+            </md-input-container>
+
+            <md-input-container class="md-block">
+                <label translate="CUSTOMERS.ID">תעודת זהות</label>
+                <input name="id" ng-model="vm.customer.id" ng-pattern="/^[0-9]{8,9}$/" required md-autofocus>
+                <div ng-messages="customerForm.id.$error" ng-show="customerForm.id.$touched" role="alert">
+                    <div ng-message="required">
+                        <span translate="CUSTOMERS.ERRORS.REQUIRED_FILED">שדה חובה</span>
+                    </div>
+                    <div ng-message="pattern">
+                        <span translate="CUSTOMERS.ERRORS.REQUIRED_ID">דרוש מספר עם 9 ספרות</span>
+                    </div>
+                </div>
+            </md-input-container>
+
+            <md-input-container class="md-block">
+                <label translate="CUSTOMERS.PHONE">מספר טלפון</label>
+                <input name="phone" ng-model="vm.customer.phone" ng-pattern="/^[0-9\-]*$/" required md-autofocus>
+                <div ng-messages="customerForm.phone.$error" ng-show="customerForm.phone.$touched" role="alert">
+                    <div ng-message="required">
+                        <span translate="CUSTOMERS.ERRORS.REQUIRED_FILED">שדה חובה</span>
+                    </div>
+                    <div ng-message="pattern">
+                        <span translate="CUSTOMERS.ERRORS.REQUIRED_PHONE">דרוש מספר עם 9 ספרות</span>
+                    </div>
+                </div>
+            </md-input-container>
+
+            <md-input-container class="md-block">
+                <label translate="CUSTOMERS.NOTES">הערות</label>
+                <textarea name="notes" ng-model="vm.customer.notes" md-autofocus> </textarea>
+            </md-input-container>
+
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row" layout-align="space-between center">
+            <div layout="row" layout-align="start center">
+                <md-button type="submit" ng-if="!vm.newCustomer" ng-click="vm.addCustomer()"
+                           class="send-button md-accent md-raised"
+                           ng-disabled="customerForm.$invalid || customerForm.$pristine"
+                           aria-label="SAVE" translate="CUSTOMERS.SAVE" translate-attr-aria-label="CUSTOMERS.SAVE">
+                    הוסף
+                </md-button>
+
+                <md-button type="submit" ng-if="vm.newCustomer" ng-click="vm.addCustomer()"
+                           class="send-button md-accent md-raised"
+                           ng-disabled="customerForm.$invalid || customerForm.$pristine"
+                            aria-label="SAVE" translate="CUSTOMERS.SAVE" translate-attr-aria-label="CUSTOMERS.SAVE">
+                    הוסף2
+                </md-button>
+
+            </div>
+
+           
+        </md-dialog-actions>
+    </form>
+</md-dialog>
