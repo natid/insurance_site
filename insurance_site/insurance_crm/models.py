@@ -24,6 +24,7 @@ class Client(models.Model):
     agent = models.ForeignKey(Agent, related_name="clients")
     status = models.CharField(max_length=50, null=True)
     phone_number = models.CharField(max_length=50, null=True)
+    id_number = models.CharField(max_length=20)
 
     def __str__(self):
         return "Client: {}".format(self.name)

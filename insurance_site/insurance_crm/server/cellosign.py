@@ -15,7 +15,7 @@ def send_sign_document_request_to_client(client_id):
     agent_name = agent.first_name + " " + agent.last_name
     inputvalues = {
         "client_name":client.name,
-        "client_id":client.id,
+        "client_id":client.id_number,
         "agent_name":agent_name,
         "agent_name_2":agent_name,
         "agent_license_number":agent.license_number,
