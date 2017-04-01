@@ -1,0 +1,10 @@
+{
+    "CUSTOMERS": {
+        "TITLE": "Customers3",
+        "SEARCH": "Search",
+        "NAME": "Name",
+        "EMAIL": "Email",
+        "PHONE": "Phone Number",
+        "STATUS": "Status"
+    }
+}
