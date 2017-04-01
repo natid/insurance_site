@@ -6,7 +6,7 @@ from django.views.generic import TemplateView
 
 
 router = DefaultRouter()
-router.register(r'clients', ClientViewSet)
+router.register(r'clients', ClientViewSet, base_name="client")
 router.register(r'agents', AgentViewSet)
 
 urlpatterns = router.urls

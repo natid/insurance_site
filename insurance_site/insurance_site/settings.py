@@ -26,6 +26,11 @@ SECRET_KEY = 'bsfbf-i=dbbp-y6_5sl_^_s2cs3vm&0jefo*-4ooxu&iv!opq$'
 DEBUG = True
 
 ALLOWED_HOSTS = ['23pxwaodud.execute-api.us-west-2.amazonaws.com', '127.0.0.1', 'localhost', 'poly-wizz.co.il']
+<<<<<<< .mine
+ALLOWED_HOSTS = ['23pxwaodud.execute-api.us-west-2.amazonaws.com', '127.0.0.1', 'localhost', 'poly-wizz.co.il']
+=======
+ALLOWED_HOSTS = ['127.0.0.1', 'poly-wizz.co.il']
+>>>>>>> .theirs
 
 
 # Application definition

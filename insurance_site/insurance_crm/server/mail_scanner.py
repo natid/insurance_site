@@ -26,5 +26,5 @@ class MailScanner():
             mails_with_attachments = gmail_manager.get_attachments_for_message(mails)
             mail_details = gmail_manager.get_mail_details(mails)
             if mail_details:
-                dal_django.add_mails_to_client(mails_with_attachments, mail_details["customer_name"], mail_details["company_email"])
+                dal_django.add_mails_to_client(mails_with_attachments, mail_details["customer_id"], mail_details["company_email"].split("@")[1])
                 gmail_manager.set_thread_as_read(thread)

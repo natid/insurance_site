@@ -22,5 +22,5 @@ MESSAGE_BODY_TEMPLATE = """
 טל' נייד: {2}
 """
 
-CLIENT_INVITE_MESSAGE = "שלום כיתה א"
+CLIENT_INVITE_MESSAGE = "אנא חתום על הטופס המצורף"
 CELLOSIGN_REQUEST_ADDRESS = 'http://test.cellosign.com/777/rep/create_session'
