@@ -98,14 +98,14 @@ def get_mail_details(mails):
     for mail in mails:
         for header in mail["payload"]["headers"]:
             if header["name"] == "To" and "+" in header["value"]:
-                details["customer_name"] = header["value"].split("+")[1].split("@")[0].replace("_", " ")
+                details["customer_id"] = header["value"].split("+")[1].split("@")[0].replace("_", " ")
             if header["name"] == "From":
                 if "<" in header["value"]:
                     details["company_email"] = header["value"].split("<")[1][:-1]
                 else:
                     details["company_email"] = header["value"]
 
-    if set(("customer_name", "company_email")) == set(details):
+    if set(("customer_id", "company_email")) == set(details):
         return details
 
 def set_thread_as_read(thread):
