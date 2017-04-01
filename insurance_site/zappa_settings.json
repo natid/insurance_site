@@ -3,7 +3,6 @@
         "django_settings": "insurance_site.settings", 
         "s3_bucket": "zappa-lunzmj0hb",
         "aws_region": "us-west-2",
-        "use_precompiled_packages": true,
         "domain": "poly-wizz.co.il",
         "lets_encrypt_key": "/mnt/share/insurance/insurance_site/insurance_site/rsa.key"
     }
