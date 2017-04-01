@@ -4,7 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from server.cellosign import send_sign_document_request_to_client
 from django.http import HttpResponse
 from insurance_crm.server.mail_scanner import MailScanner
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, render, redirect
 import base64
 import os
 from insurance_crm.dal import dal_django
@@ -41,3 +41,6 @@ def get_pdf_from_cellosign(request):
             sender_email, company.mail, message_title, message_body, pdf_file)
         gmail_manager.send_mail(sender_email, message)
     return HttpResponse("OK")
+
+def return_main_page(request):
+    return redirect("https://d3p5dvqck1wwt9.cloudfront.net/dist/index.html")

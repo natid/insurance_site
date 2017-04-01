@@ -5,7 +5,8 @@
     angular
         .module('app.customers')
         .service('CustomersService', CustomersService);
-    
+    //for production
+    //var baseURL = 'https://poly-wizz.co.il';
     var baseURL = 'http://127.0.0.1:8000';
     /** @ngInject */
     function CustomersService($q, $http)
