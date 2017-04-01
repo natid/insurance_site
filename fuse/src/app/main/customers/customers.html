@@ -1,0 +1,91 @@
+<div id="customer-manager" class="page-layout simple right-sidenav" layout="row">
+    <!-- CENTER -->
+    <div class="center" layout="column" flex>
+
+        <!-- HEADER -->
+        <div class="header md-accent-bg">
+
+            <div class="header-content" layout="column" layout-align="space-between">
+
+                <!-- TOOLBAR -->
+                <div class="toolbar" layout="row" layout-align="space-between">
+
+                    <md-button class="md-icon-button main-sidenav-toggle" ng-click="vm.toggleSidenav('main-sidenav')"
+                               aria-label="Toggle Main Sidenav" translate
+                               translate-attr-aria-label="FILE.TOOGLE_MAIN_SIDENAV">
+                        <md-icon md-font-icon="icon-menu" class="icon"></md-icon>
+                    </md-button>
+
+                    <div class="right-side" layout="row">
+                        <md-button class="md-icon-button" aria-label="Search" translate
+                                   translate-attr-aria-label="FM.SEARCH">
+                            <md-icon md-font-icon="icon-magnify"></md-icon>
+                            <md-tooltip><span translate="CUSTOMERS.SEARCH">Search</span></md-tooltip>
+                        </md-button>
+
+                        
+                    </div>
+                </div>
+                <!-- / TOOLBAR -->
+
+                <!-- BREADCRUMB -->
+                <div class="breadcrumb text-truncate" layout="row" layout-align="start center">
+                <span translate="CUSTOMERS.TABLE_TITLE">
+                    <md-icon md-font-icon="icon-chevron-right" class="icon separator"></md-icon>
+                    Customers
+                </span>
+                </div>
+                <!-- / BREADCRUMB -->
+            </div>
+
+            <!-- ADD FILE BUTTON -->
+            
+            <div id="customer-uploader">
+
+                <md-button flow-btn class="add-customer-button md-fab md-warn"
+                           aria-label="Add file" translate
+                           ng-click="vm.addCustomer($event)"
+                           translate-attr-aria-label="FM.ADD_FILE">
+                    <md-icon md-font-icon="icon-plus"></md-icon>
+                </md-button>
+            </div>
+            <!-- / ADD FILE BUTTON -->
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT -->
+   <!-- LIST VIEW -->
+<table class="simple list-view rtl">
+    <thead>
+        <tr>
+            <th></th>
+            <th translate="CUSTOMERS.NAME">Name</th>
+            <th hide show-gt-sm translate="CUSTOMERS.EMAIL">Email</th>
+            <th hide-xs translate="CUSTOMERS.PHONE">Phone Number</th>
+            <th hide-xs translate="CUSTOMERS.STATUS">Status</th>
+            <th hide-gt-md></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr ng-repeat="customer in vm.customers | filter:global.search" ng-click="vm.select(customer)" ng-class="{'selected' : vm.selected === file}">
+            <td class="file-icon">
+                <i class="icon-account-box"></i>
+            </td>
+            <td class="name">{{customer.name}}</td>
+            <td class="type" hide-xs>{{customer.email}}</td>
+            <td class="owner" hide-xs>{{customer.phone}}</td>
+            <td class="owner" hide-xs>{{customer.status}}</td>
+            <td class="show-details" hide-gt-md>
+                <md-button class="md-icon-button sidenav-toggle" ng-click="vm.toggleDetails(file)" aria-label="Details" translate translate-attr-aria-label="FM.DETAILS">
+                    <md-icon md-font-icon="icon-information-outline"></md-icon>
+                </md-button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<!-- / LIST VIEW -->
+        <!-- / CONTENT -->
+
+    </div>
+</div>
