@@ -48,8 +48,8 @@
 
             md-content {
 
-                .chat-list {
-
+                .companies-list {
+                    text-align: right;
                     .contact {
 
                         .name {
@@ -79,8 +79,10 @@
                             line-height: 24px;
                         }
                     }
+                    md-list-item .md-list-item-text h3 {
+                        text-align: right;
+                    }
                 }
-
                 md-list-item:last-child {
                     margin-bottom: 72px;
                 }

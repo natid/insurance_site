@@ -11,19 +11,20 @@
     /** @ngInject */
     function CustomersService($q, $http)
     {
-        function Customer(id, name, phone, status, notes){
+        function Customer(id, id_number, name, phone, status, notes){
             this.id = id;
+            this.id_number = id_number;
             this.name = name;
             this.phone = phone;
             this.status = status;
             this.notes = notes;
         }
 
-        function addCustomer(agent_id, id, name, phone, notes, status) {
+        function addCustomer(agent_id, id_number, name, phone, notes, status) {
             var d = $q.defer();
             var customer = {
                 agent:agent_id,
-                id_number:id,
+                id_number:id_number,
                 name:name,
                 phone_number:phone,
                 notes:notes,
@@ -50,7 +51,7 @@
                     var cs = [];
                     for (var i =0 ; i< response.data.length; ++i) {
                         var customer = response.data[i];
-                        cs.push(new Customer(customer.id_number, customer.name, customer.phone_number,customer.status));
+                        cs.push(new Customer(customer.id, customer.id_number, customer.name, customer.phone_number,customer.status));
                     }
                     d.resolve(cs)
                 }, function(response) {
@@ -66,17 +67,37 @@
                     url: baseURL+'/insurance_crm/clients/'+id
                 }).then(function(response) {
                     var customer = response.data;
-                    d.resolve(new Customer(customer.id_number, customer.name, customer.phone_number,customer.status));
+                    d.resolve(new Customer(id, customer.id_number, customer.name, customer.phone_number,customer.status));
                 }, function(response) {
                     d.reject(response);
                 });
             return d.promise;
         }
 
+
+        function getInsuranceCompanies() {
+             var d = $q.defer();
+            // $http({
+            //         method: 'GET',
+            //         url: baseURL+'/insurance_crm/clients/'+id
+            //     }).then(function(response) {
+            //         var customer = response.data;
+            //         d.resolve(new Customer(customer.id_number, customer.name, customer.phone_number,customer.status));
+            //     }, function(response) {
+            //         d.reject(response);
+            //     });
+            d.resolve([
+                {"id":1,"name":"הראל", "email":"harel@harel.com"},
+                {"id":2,"name":"מגדל", "email":"migdal@migdal.com"}
+            ])
+            return d.promise;
+        }
+
         return {
             getCustomers:getCustomers,
             addCustomer:addCustomer,
-            getCustomer:getCustomer
+            getCustomer:getCustomer,
+            getInsuranceCompanies:getInsuranceCompanies
         }
     }
 })();
