@@ -2,6 +2,8 @@ __author__ = 'magenn'
 
 from insurance_crm.models import Client, InsuranceCompany, ResponseMail, Attachment, SignedPdf, Credentials
 
+def get_client_from_id(client_id):
+    return Client.objects.get(id=client_id)
 
 def get_insurance_companies():
     return InsuranceCompany.objects.all()
