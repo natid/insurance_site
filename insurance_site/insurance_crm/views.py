@@ -44,3 +44,4 @@ def get_pdf_from_cellosign(request):
 
 def return_main_page(request):
     return redirect("https://d3p5dvqck1wwt9.cloudfront.net/dist/index.html")
+
