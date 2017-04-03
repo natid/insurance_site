@@ -7,7 +7,8 @@
         .service('CustomersService', CustomersService);
     //for production
     //var baseURL = 'https://poly-wizz.co.il';
-    var baseURL = 'http://127.0.0.1:8000';
+   var baseURL = '';
+    // var baseURL = 'http://localhost:8000'
     /** @ngInject */
     function CustomersService($q, $http)
     {
@@ -73,9 +74,9 @@
                 });
             return d.promise;
         }
+        console.log($http)
 
-
-        function getInsuranceCompanies() {
+        function getInsuranceCompanies(clientId) {
              var d = $q.defer();
             // $http({
             //         method: 'GET',
@@ -87,8 +88,26 @@
             //         d.reject(response);
             //     });
             d.resolve([
-                {"id":1,"name":"הראל", "email":"harel@harel.com"},
-                {"id":2,"name":"מגדל", "email":"migdal@migdal.com"}
+                {"name": "מגדל","id":1,"status":true},
+                {"name": "הראל","id":2,"status":false}
+            ])
+            return d.promise;
+        }
+
+         function getCompanyData(clientId, companyId) {
+             var d = $q.defer();
+            // $http({
+            //         method: 'GET',
+            //         url: baseURL+'/insurance_crm/clients/'+id
+            //     }).then(function(response) {
+            //         var customer = response.data;
+            //         d.resolve(new Customer(customer.id_number, customer.name, customer.phone_number,customer.status));
+            //     }, function(response) {
+            //         d.reject(response);
+            //     });
+            d.resolve([
+               {data:"מייל תוכן"},
+               {data:"גנן גידל דגן בגן"}
             ])
             return d.promise;
         }
@@ -97,7 +116,8 @@
             getCustomers:getCustomers,
             addCustomer:addCustomer,
             getCustomer:getCustomer,
-            getInsuranceCompanies:getInsuranceCompanies
+            getInsuranceCompanies:getInsuranceCompanies,
+            getCompanyData:getCompanyData
         }
     }
 })();
