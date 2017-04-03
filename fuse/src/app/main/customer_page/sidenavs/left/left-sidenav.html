@@ -4,14 +4,23 @@
      layout="column" flex>
 
      <!-- CHATS TOOLBAR -->
-<md-toolbar class="md-tall">
+<md-toolbar class="md-tall md-accent">
 
     <!-- TOOLBAR TOP -->
     <div class="md-toolbar-tools md-toolbar-tools-top">
-        {{vm.customer.name}}
-
- 
-
+        <div layout="row" >
+            <div layout="column" layout-align="start center" flex>
+                <div>
+                {{vm.customer.first_name}} {{vm.customer.last_name}}
+                </div>
+                <div class="secondary-text">
+                    {{vm.customer.id_number}}
+                </div>
+            </div>
+            <md-button layout-align="end center" class="md-raised md-primary" ng-click="vm.sendToCellosign(vm.customer.id)">
+                        <span>שלח לסלוסיין</span>
+            </md-button>
+        </div>
     </div>
     <!-- / TOOLBAR TOP -->
 
@@ -48,10 +57,10 @@
                       ng-repeat-start="company in vm.companies  | filter: {name: vm.search} "
                       ng-click="vm.getCompanyData(company.id); company.open = !company.open">
 
-            <!-- <div class="avatar-wrapper">
-                <img ng-src="{{contact.avatar}}" class="md-avatar avatar" alt="{{contact.name}}"/>
+            <div class="avatar-wrapper">
+                <img ng-src="assets/images/companies/{{company.id}}.png" class="md-avatar avatar" alt="{{contact.name}}"/>
                 <i class="icon icon- s16 status" ng-class="contact.status"></i>
-            </div> -->
+            </div>
 
             <div class="md-list-item-text">
                 <h3 class="name" style="text-align: right">{{company.name}}</h3>
@@ -65,7 +74,8 @@
         <md-list-item class="contact md-1-line"
                     ng-if="company.open"
                     ng-repeat-end
-                    ng-repeat="data in vm.companiesData[company.id]">
+                    ng-repeat="data in vm.companiesData[company.id]"
+                    ng-click="vm.currentMailData = data.data">
 
             <div class="md-list-item-text">
                 <p class="name" style="text-align: right">מייל מספר {{$index}}</p>

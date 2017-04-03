@@ -19,7 +19,7 @@
             </md-sidenav>
 
             <!-- START -->
-            <div class="start-point" ng-if="!vm.chat" flex layout="column" flex layout-align="center center">
+            <div class="start-point" ng-if="!vm.currentMailData" flex layout="column" flex layout-align="center center">
 
                 <div class="big-circle md-whiteframe-4dp">
 
@@ -27,18 +27,20 @@
 
                 </div>
 
-                <span class="app-title" translate="CHAT.APP_TITLE">Chat App</span>
+                <span class="app-title" translate="CUSTOMER.MAIL_TITLE">Chat App</span>
 
-                <span class="hide show-gt-md secondary-text" translate="CHAT.START_MESSAGE">Select contact to start the
+                <span class="hide show-gt-md secondary-text" translate="CUSTOMER.START_MESSAGE">Select contact to start the
                     chat!..</span>
                 <md-button class="md-raised hide-gt-md" ng-click="vm.toggleSidenav('left-sidenav')"
-                           translate="CHAT.START_MESSAGE">
+                           translate="CUSTOMER.START_MESSAGE">
                     Select contact to start the chat!..
                 </md-button>
 
             </div>
             <!-- / START -->
-
+             <div ng-if="vm.currentMailData">
+             {{vm.currentMailData}}
+             </div>
             <!-- CHAT -->
             <div ng-if="!vm.chat" class="chat" layout="column" flex>
 

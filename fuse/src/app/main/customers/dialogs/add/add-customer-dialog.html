@@ -10,15 +10,27 @@
         </md-toolbar>
 
         <md-dialog-content ms-scroll>
-            <md-input-container class="md-block">
+            <div layout-gt-sm="row">
+            <md-input-container class="md-block" flex-gt-sm>
                 <label translate="CUSTOMERS.NAME">שם</label>
-                <input name="name" ng-model="vm.customer.name" required md-autofocus>
-                <div ng-messages="customerForm.name.$error" ng-show="customerForm.name.$touched" role="alert">
+                <input name="first_name" ng-model="vm.customer.first_name" required md-autofocus>
+                <div ng-messages="customerForm.first_name.$error" ng-show="customerForm.first_name.$touched" role="alert">
                     <div ng-message="required">
                         <span translate="CUSTOMERS.ERRORS.REQUIRED_FILED">שדה חובה</span>
                     </div>
                 </div>
             </md-input-container>
+
+            <md-input-container class="md-block" flex-gt-sm>
+                <label translate="CUSTOMERS.FAMILY">שם משפחה</label>
+                <input name="last_name" ng-model="vm.customer.last_name" required md-autofocus>
+                <div ng-messages="customerForm.last_name.$error" ng-show="customerForm.last_name.$touched" role="alert">
+                    <div ng-message="required">
+                        <span translate="CUSTOMERS.ERRORS.REQUIRED_FILED">שדה חובה</span>
+                    </div>
+                </div>
+            </md-input-container>
+            </div>
 
             <md-input-container class="md-block">
                 <label translate="CUSTOMERS.ID">תעודת זהות</label>

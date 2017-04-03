@@ -14,21 +14,11 @@
         vm.customer = null
         var customerId = $state.params.id;
         vm.companiesData = {};
+        vm.currentMailData = null;
 
         CustomersService.getCustomer(customerId).then(function(customer){
             vm.customer = customer;
         }, function(error) {
-             ////
-            vm.customer = {
-                "id": 2,
-                "name": "Elisha",
-                "notes": "",
-                "status": null,
-                "phone_number": "123345546",
-                "id_number": "0",
-                "agent": 2
-            };
-            ////
             console.warn(error);
         });
 
@@ -41,6 +31,10 @@
                 vm.companiesData[companyId] = response;
                 console.log(vm.companiesData);
             })
+        }
+
+        vm.sendToCellosign = function(customerId) {
+            CustomersService.sendToCellosign(customerId);
         }
         // Data
         // Methods
