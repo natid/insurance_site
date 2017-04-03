@@ -63,7 +63,10 @@ class ClientList(ListAPIView):
 def insurance_company_list(request):
         all_insurance_companies = InsuranceCompany.objects.distinct()
 
-        client_mails = ResponseMail.objects.filter(client__agent__user=request.user)
+        #client_mails = ResponseMail.objects.filter(client__agent__user=request.user)
+
+        client_id = request.GET.get("client_id")
+        client_mails = ResponseMail.objects.filter(client__id=client_id)
         companies_in_mails = set([x.insurance_company for x in client_mails])
 
         data = []
