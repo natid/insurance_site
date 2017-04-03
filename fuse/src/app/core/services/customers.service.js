@@ -93,19 +93,14 @@
 
          function getCompanyData(clientId, companyId) {
              var d = $q.defer();
-            // $http({
-            //         method: 'GET',
-            //         url: baseURL+'/insurance_crm/clients/'+id
-            //     }).then(function(response) {
-            //         var customer = response.data;
-            //         d.resolve(new Customer(customer.id_number, customer.name, customer.phone_number,customer.status));
-            //     }, function(response) {
-            //         d.reject(response);
-            //     });
-            d.resolve([
-               {data:"מייל תוכן"},
-               {data:"גנן גידל דגן בגן"}
-            ])
+            $http({
+                    method: 'GET',
+                    url: baseURL+'/insurance_crm/mail_data?insurance_company_id='+companyId+'&client_id='+clientId
+                }).then(function(response) {
+                    d.resolve(response.data);
+                }, function(response) {
+                    d.reject(response);
+                });
             return d.promise;
         }
 

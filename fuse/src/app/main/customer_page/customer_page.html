@@ -23,7 +23,7 @@
 
                 <div class="big-circle md-whiteframe-4dp">
 
-                    <md-icon class="s128 md-accent" md-font-icon="icon-hangouts"></md-icon>
+                    <md-icon class="s128 md-accent" md-font-icon="icon-email"></md-icon>
 
                 </div>
 
@@ -38,8 +38,8 @@
 
             </div>
             <!-- / START -->
-             <div ng-if="vm.currentMailData">
-             {{vm.currentMailData}}
+             <div ng-if="vm.currentMailData" style="white-space:pre">
+                    {{vm.currentMailData}}
              </div>
             <!-- CHAT -->
             <div ng-if="!vm.chat" class="chat" layout="column" flex>

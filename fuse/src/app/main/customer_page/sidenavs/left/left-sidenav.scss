@@ -18,8 +18,10 @@
             opacity: 1 !important;
             transition-duration: 300ms;
             border-left: 1px solid rgba(0, 0, 0, 0.12);
-        
-        #chat-app {
+        }
+    }
+}        
+#chat-app {
 
     .left-sidenav {
 
@@ -81,7 +83,7 @@
                     }
                     md-list-item .md-list-item-text h3 {
                         text-align: right;
-                    }
+                    }              
                 }
                 md-list-item:last-child {
                     margin-bottom: 72px;
@@ -95,7 +97,8 @@
             }
         }
     }
-}
-        }
-    }
+    .disabled-company {
+        color: gray;
+        font-style: italic;
+    }      
 }

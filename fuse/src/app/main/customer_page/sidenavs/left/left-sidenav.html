@@ -9,14 +9,12 @@
     <!-- TOOLBAR TOP -->
     <div class="md-toolbar-tools md-toolbar-tools-top">
         <div layout="row" >
-            <div layout="column" layout-align="start center" flex>
                 <div>
                 {{vm.customer.first_name}} {{vm.customer.last_name}}
                 </div>
                 <div class="secondary-text">
-                    {{vm.customer.id_number}}
+                    {{' '}} {{vm.customer.id_number}}
                 </div>
-            </div>
             <md-button layout-align="end center" class="md-raised md-primary" ng-click="vm.sendToCellosign(vm.customer.id)">
                         <span>שלח לסלוסיין</span>
             </md-button>
@@ -63,7 +61,7 @@
             </div>
 
             <div class="md-list-item-text">
-                <h3 class="name" style="text-align: right">{{company.name}}</h3>
+                <h3 class="name" ng-class="{'disabled-company': !company.status}" style="text-align: right">{{company.name}}</h3>
                 <p class="last-message text-truncate">{{company.email}}</p>
             </div>
 
@@ -75,7 +73,7 @@
                     ng-if="company.open"
                     ng-repeat-end
                     ng-repeat="data in vm.companiesData[company.id]"
-                    ng-click="vm.currentMailData = data.data">
+                    ng-click="vm.currentMailData = data.text">
 
             <div class="md-list-item-text">
                 <p class="name" style="text-align: right">מייל מספר {{$index}}</p>
