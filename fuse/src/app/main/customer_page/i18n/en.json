@@ -1,5 +1,6 @@
 {
     "CUSTOMER": {
-       
+        "MAIL_TITLE":"מייל",
+        "START_MESSAGE":"לחץ על מייל כדי לראות את התוכן"
     }
 }

@@ -55,15 +55,13 @@
 
         <!-- CONTENT -->
    <!-- LIST VIEW -->
-        <md-progress-circular class="md-accent" ng-if="vm.loadingProgress"
-                             layout-align="start center" md-mode="indeterminate" md-diameter="100">
-        </md-progress-circular>
 <table class="simple list-view rtl" ng-if="vm.customers">
     <thead>
         <tr>
             <th></th>
             <th translate="CUSTOMERS.ID">ID</th>
             <th translate="CUSTOMERS.NAME">Name</th>
+            <th translate="CUSTOMERS.FAMILY">Family</th>
             <th hide-xs translate="CUSTOMERS.PHONE">Phone Number</th>
             <th hide-xs translate="CUSTOMERS.STATUS">Status</th>
             <th></th>
@@ -76,7 +74,8 @@
                 <i class="icon-account-box"></i>
             </td>
             <td class="customerid">{{customer.id_number}}</td>
-            <td class="name">{{customer.name}}</td>
+            <td class="name">{{customer.first_name}}</td>
+            <td class="family">{{customer.last_name}}</td>
             <td class="owner" hide-xs>{{customer.phone}}</td>
             <td class="owner" hide-xs>{{customer.status}}</td>
             <td class="show-details">
@@ -87,6 +86,14 @@
         </tr>
     </tbody>
 </table>
+
+<div class="start-point" ng-if="!vm.customers" flex layout="column" flex layout-align="center center">
+
+                    <md-progress-circular class="md-accent" ng-if="vm.loadingProgress"
+                             layout-align="start center" md-mode="indeterminate" md-diameter="100">
+                         </md-progress-circular>
+
+            </div>
 <!-- / LIST VIEW -->
         <!-- / CONTENT -->
 

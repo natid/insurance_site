@@ -32,6 +32,10 @@
                     customers: vm.customers,
                     event: ev
                 }
+            }).then(function(){
+                 CustomersService.getCustomers().then(function(customers){
+                    vm.customers = customers;
+                });
             });
         }
 
