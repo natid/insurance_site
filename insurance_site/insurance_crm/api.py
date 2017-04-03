@@ -3,13 +3,15 @@ from rest_framework import permissions
 from rest_framework.generics import ListAPIView
 
 from .serializers import ClientSerializer, AgentSerializer, ResponseMailSerializer
-from .models import Client, Agent, ResponseMail, InsuranceCompany
+from .models import Client, Agent, ResponseMail, InsuranceCompany, Attachment
 from rest_framework.request import Request
 from rest_framework.response import Response
 from permissions import IsTheAgent
 from rest_framework.decorators import detail_route, list_route
 from rest_framework.decorators import api_view
 from django.http import JsonResponse
+import json
+import base64
 
 
 class ResponseMailViewSet(ViewSet):
@@ -91,4 +93,30 @@ def insurance_company_list(request):
 
 @api_view(['GET'])
 def get_response_mail_data(request):
-    pass
+    insurance_company_id = request.GET.get("insurance_company_id")
+    client_id = request.GET.get("client_id")
+    company_mails = ResponseMail.objects.filter(insurance_company__id=insurance_company_id, client__id=client_id)
+
+    response = []
+
+    for company_mail in company_mails:
+        mail_resp = {}
+        mail_data = json.loads(company_mail.mail)
+
+        data = ""
+        for part in mail_data["payload"]["parts"]:
+
+            data += str(part["body"]["data"])
+
+        mail_resp["text"] = base64.urlsafe_b64decode(data)
+
+        attachments = Attachment.object.filter(response_mail=company_mail)
+
+        mail_resp["attachments"] = []
+
+        for attachment in attachments:
+            mail_resp["attachments"].append(attachment.attachment)
+
+        response.append(mail_resp)
+
+    return JsonResponse(response, safe=False)
