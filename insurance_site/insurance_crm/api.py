@@ -74,17 +74,19 @@ def insurance_company_list(request):
         for ic in all_insurance_companies:
 
             if ic in companies_in_mails:
-                data.append({ic.id: {
+                data.append({
+                    "id": ic.id,
                     "name": ic.name,
                     "status": True
-                }})
+                })
             else:
-                data.append({ic.id: {
+                data.append({
+                    "id": ic.id,
                     "name": ic.name,
                     "status": False
-                }})
+                })
 
-        return JsonResponse(data)
+        return JsonResponse(data, safe=False)
 
 
 @api_view(['GET'])
