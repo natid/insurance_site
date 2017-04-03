@@ -19,36 +19,39 @@ class Agent(models.Model):
 
 @python_2_unicode_compatible
 class Client(models.Model):
-    name = models.CharField(max_length=50)
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
     notes = models.TextField(blank=True, null=True)
-    agent = models.ForeignKey(Agent, related_name="clients")
+    agent = models.ForeignKey(Agent)
     status = models.CharField(max_length=50, null=True)
     phone_number = models.CharField(max_length=50, null=True)
     id_number = models.CharField(max_length=20)
 
     def __str__(self):
-        return "Client: {}".format(self.name)
+        return "Client: {}".format(self.first_name, self.last_name)
 
 @python_2_unicode_compatible
 class InsuranceCompany(models.Model):
     name = models.CharField(max_length=50)
     mail = models.CharField(max_length=50)
+    clients = models.ManyToManyField(Client, through='ResponseMail')
 
     def __str__(self):
         return "Insurance company: {}".format(self.name)
 
 @python_2_unicode_compatible
 class ResponseMail(models.Model):
-    customer = models.ForeignKey(Client, related_name="identification_number")
-    insurance_company = models.ForeignKey(InsuranceCompany, related_name="number")
+    client = models.ForeignKey(Client)
+    insurance_company = models.ForeignKey(InsuranceCompany)
     mail = models.TextField(max_length=50)
+    date_received = models.DateField()
 
     def __str__(self):
         return "ResponseMails: {}".format(self.id)
 
 @python_2_unicode_compatible
 class Attachment(models.Model):
-    response_mail = models.ForeignKey(ResponseMail, related_name="attachment_ids")
+    response_mail = models.ForeignKey(ResponseMail)
     attachment = models.TextField(max_length=50000)
 
     def __str__(self):
@@ -56,7 +59,7 @@ class Attachment(models.Model):
 
 @python_2_unicode_compatible
 class SignedPdf(models.Model):
-    customer = models.ForeignKey(Client, related_name="pdf_id")
+    client = models.ForeignKey(Client)
     pdf_file = models.TextField(max_length=50000)
 
     def __str__(self):
