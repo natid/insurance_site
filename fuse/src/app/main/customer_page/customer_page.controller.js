@@ -12,7 +12,10 @@
         var vm = this;
         vm.chat = true;
         vm.customer = null
-        CustomersService.getCustomer($state.params.id).then(function(customer){
+        var customerId = $state.params.id;
+        vm.companiesData = {};
+
+        CustomersService.getCustomer(customerId).then(function(customer){
             vm.customer = customer;
         }, function(error) {
              ////
@@ -28,10 +31,17 @@
             ////
             console.warn(error);
         });
-        CustomersService.getInsuranceCompanies().then(function(companies){
+
+        CustomersService.getInsuranceCompanies(customerId).then(function(companies){
             vm.companies = companies;
         });
 
+        vm.getCompanyData = function(companyId) {
+            CustomersService.getCompanyData(customerId, companyId).then(function(response) {
+                vm.companiesData[companyId] = response;
+                console.log(vm.companiesData);
+            })
+        }
         // Data
         // Methods
       

@@ -10,11 +10,15 @@
     function CustomersController($state, $document, $mdDialog, CustomersService)
     {
         var vm = this;
-
+        vm.loadingProgress = true;
         // Data
         CustomersService.getCustomers().then(function(customers){
             vm.customers = customers;
-        })
+        },function(response){
+            console.warn(response);
+        }).finally(function(){
+            vm.loadingProgress = false;
+        });
         // Methods
         vm.addCustomer = function(ev) {
             $mdDialog.show({

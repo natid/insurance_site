@@ -55,7 +55,10 @@
 
         <!-- CONTENT -->
    <!-- LIST VIEW -->
-<table class="simple list-view rtl">
+        <md-progress-circular class="md-accent" ng-if="vm.loadingProgress"
+                             layout-align="start center" md-mode="indeterminate" md-diameter="100">
+        </md-progress-circular>
+<table class="simple list-view rtl" ng-if="vm.customers">
     <thead>
         <tr>
             <th></th>
