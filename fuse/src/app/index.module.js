@@ -22,7 +22,8 @@
 
             // Sample
             'app.sample',
+            'app.my_profile',
             'app.customers',
-            'app.customer_page'
+            'app.customer_page',
         ]);
 })();
