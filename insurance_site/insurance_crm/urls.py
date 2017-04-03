@@ -1,4 +1,4 @@
-from .api import ClientViewSet, AgentViewSet, ResponseMailViewSet
+from .api import ClientViewSet, AgentViewSet, ResponseMailViewSet, insurance_company_list
 from rest_framework.routers import DefaultRouter
 from views import send_cellosign_request, run_mail_scanner, get_pdf_from_cellosign, return_main_page
 from django.conf.urls import url, include
@@ -17,3 +17,4 @@ urlpatterns.append(url(r'return_cellosign_pdf', get_pdf_from_cellosign))
 urlpatterns.append(url(r'run_mail_scanner/', run_mail_scanner))
 #urlpatterns.append(url(r'^client_list', TemplateView.as_view(template_name="insurance_crm/client_list.html")))
 urlpatterns.append(url(r'^fuse/', return_main_page))
+urlpatterns.append(url(r'insurance_company_list/', insurance_company_list))
