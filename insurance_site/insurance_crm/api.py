@@ -106,11 +106,15 @@ def get_response_mail_data(request):
         data = ""
         for part in mail_data["payload"]["parts"]:
 
-            data += str(part["body"]["data"])
+            if "data" in part["body"]:
+                data += str(part["body"]["data"])
 
-        mail_resp["text"] = base64.urlsafe_b64decode(data)
+        if data == "":
+            mail_resp["text"] = mail_data["snippet"]
+        else:
+            mail_resp["text"] = base64.urlsafe_b64decode(data)
 
-        attachments = Attachment.object.filter(response_mail=company_mail)
+        attachments = Attachment.objects.filter(response_mail=company_mail)
 
         mail_resp["attachments"] = []
 
