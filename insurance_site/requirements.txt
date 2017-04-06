@@ -57,3 +57,4 @@ Werkzeug==0.12
 win-unicode-console==0.5
 wsgi-request-logger==0.4.6
 zappa==0.39.1
+django-cors-headers==2.0.2
