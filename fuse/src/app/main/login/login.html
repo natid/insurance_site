@@ -1,46 +1,75 @@
 <div id="login-page">
 <div class="form">
       
-      <ul class="tab-group">
+      <ul class="tab-group" ng-if="!vm.dataLoading">
         <li class="tab" ng-click="vm.loginState ='signup'"><a href="#">רישום</a></li>
         <li class="tab active" ng-click="vm.loginState ='login'" ><a href="#">כניסה</a></li>
       </ul>
       
-      <div class="tab-content">
+          <md-progress-circular class="md-accent" ng-if="vm.dataLoading"
+                             layout-align="start center" md-mode="indeterminate" md-diameter="100">
+        </md-progress-circular>
+
+      <div class="tab-content" ng-if="!vm.dataLoading">
         <div id="signup" ng-if="vm.loginState == 'signup'">   
           <h1>רישום לאתר</h1>
           <form name="loginForm" novalidate>
           
           <div class="top-row">
             <div class="field-wrap" login-input>
-              <label ng-class="{'active': loginForm.first_name2.$touched}">
+              <label>
                 שם פרטי<span class="req">*</span>
               </label>
-              <input name="first_name2" type="text" required autocomplete="off" />
+              <input name="first_name" type="text" required ng-model="vm.firstname"/>
             </div>
         
             <div class="field-wrap" login-input>
               <label>
                 שם משפחה<span class="req">*</span>
               </label>
-              <input type="text"required autocomplete="off"/>
+              <input type="text" required ng-model="vm.lastname"/>
             </div>
           </div>
+
           <div class="field-wrap" login-input>
             <label>
               דואר אלקטרוני<span class="req">*</span>
             </label>
-            <input type="email"required autocomplete="off"/>
+            <input type="email" required ng-model="vm.email"/>
           </div>
-          
-          <div class="field-wrap" login-input>
-            <label>
-              סיסמה<span class="req">*</span>
-            </label>
-            <input type="password"required autocomplete="off"/>
+          <div class="top-row">
+            <div class="field-wrap" login-input>
+              <label>
+                טלפון<span class="req">*</span>
+              </label>
+              <input type="text" required ng-model="vm.phone" />
+            </div>
+        
+            <div class="field-wrap" login-input>
+              <label>
+                מס' רשיון<span class="req">*</span>
+              </label>
+              <input type="text" required ng-model="vm.license"/>
+            </div>
           </div>
+           <div class="top-row">
+            <div class="field-wrap" login-input>
+              <label>
+                סיסמה<span class="req">*</span>
+              </label>
+              <input type="text" required ng-model="vm.password"/>
+            </div>
+        
+            <div class="field-wrap" login-input>
+              <label>
+                הכנס סיסמה שוב<span class="req">*</span>
+              </label>
+              <input type="text" required ng-model="vm.confirmPassword"/>
+            </div>
+          </div>
+
           
-          <button type="submit" class="button button-block"/>Get Started</button>
+          <button class="button button-block" ng-click="vm.register()"/>הרשמה</button>
           
           </form>
         </div>
@@ -63,7 +92,7 @@
             </label>
             <input type="password" ng-model="vm.password" required autocomplete="off"/>
           </div>
-          <p class="forgot"><a href="#">Forgot Password?</a></p>
+          <!--<p class="forgot"><a href="#">Forgot Password?</a></p>-->
           
           <button class="button button-block" ng-click="vm.login()"/>כניסה</button>
        </form>

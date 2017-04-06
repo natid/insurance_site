@@ -6,8 +6,8 @@
         .module('fuse')
         .service('AuthenticationService', AuthenticationService);
     //for production
-    // var baseURL = 'https://poly-wizz.co.il';
-   var baseURL = ''; // local with build
+    var baseURL = 'https://poly-wizz.co.il';
+//    var baseURL = ''; // local with build
     // var baseURL = 'http://localhost:8000' // local with serve
     /** @ngInject */
 
@@ -17,13 +17,34 @@
         service.Login = Login;
         service.SetCredentials = SetCredentials;
         service.ClearCredentials = ClearCredentials;
+        service.Logout = Logout;
+        service.Signup = Signup;
  
         return service;
  
+        function Signup(password,first_name,last_name,phone_number,license_number, email_address) {
+            var d = $q.defer();
+            $http.post(baseURL + '/auth_api/signup/',
+                {"password":password,
+                "first_name":first_name,
+                "last_name":last_name,
+                "phone_number":phone_number,
+                "license_number":license_number,
+                "email_address":email_address
+            })
+                .then(function(response) {
+                    d.resolve(response);
+                }, function(response) {
+                    d.reject(response);
+                });
+            return d.promise;
+        }
+ 
+
         function Login(username, password) {
  
             var d = $q.defer();
-            $http.post('/auth_api/login/', { username: username, password: password })
+            $http.post(baseURL + '/auth_api/login/', { username: username, password: password })
                 .then(function(response) {
                     d.resolve(response);
                 }, function(response) {
@@ -55,6 +76,10 @@
             $rootScope.globals = {};
             $cookies.remove('globals');
             $http.defaults.headers.common.Authorization = 'Basic';
+        }
+
+        function Logout() {
+            ClearCredentials();
         }
     }
 

@@ -16,8 +16,8 @@
             link: function(scope, elem, attr) { 
                 var inputE = elem.find('input');
                 var label = elem.find('label');
-                
-                inputE.on('keyup blur focus', function (e) {
+
+                inputE.on('keyup blur focus input', function (e) {
                     if (e.type === 'keyup') {
                             if (inputE.val() === '') {
                         label.removeClass('active highlight');
@@ -51,6 +51,7 @@
         var vm = this;
         vm.loginState = 'login';
         $rootScope.$broadcast('msSplashScreen::remove');
+        vm.dataLoading = false;
         // Methods
 
         vm.login = function() {
@@ -58,11 +59,32 @@
             AuthenticationService.Login(vm.username, vm.password)
                 .then(function(response){
                     AuthenticationService.SetCredentials(vm.username, vm.password);
+                    vm.dataLoading = false;
                     $location.path('/customers');
                 },function(response) {
-                    vm.message = "Failed";
+                    vm.dataLoading = false;
+                    alert("Failed");
                 });
         };
+        
+
+        vm.register = function() {
+            if (vm.confirmPassword != vm.password) {
+                alert("הסיסמאות שהוכנסו לא תואמות");
+                return;
+            }
+            vm.dataLoading = true;
+            AuthenticationService.Signup(vm.password,vm.firstname, vm.lastname, vm.phone, vm.license, vm.email)
+                .then(function(response){
+                    AuthenticationService.SetCredentials(vm.username, vm.password);
+                    vm.dataLoading = false;
+                    $location.path('/customers');
+                },function(response) {
+                    vm.dataLoading = false;
+                    alert("Failed");
+                });
+
+        }
 
         //////////
     }
