@@ -158,8 +158,8 @@
 
                     </form>-->
                     <!-- / REPLY FORM -->
-                    <md-button ng-repeat="data in vm.currentMailData.attachments" class="md-raised md-primary" ng-click="vm.downlodFile('file_'+$index,data)">
-                        <span>קובץ מספר {{$index}}</span>
+                    <md-button ng-repeat="attach in vm.currentMailData.attachments" class="md-raised md-primary" ng-click="vm.downlodFile(attach.filename,attach.data)">
+                        <span ng-bind="attach.filename"></span>
                     </md-button>
                 </div>
                 <!-- / CHAT FOOTER-->
