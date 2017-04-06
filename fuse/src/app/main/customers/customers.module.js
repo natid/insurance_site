@@ -4,8 +4,7 @@
 
     angular
         .module('app.customers', [])
-        .config(config)
-        .run(run);
+        .config(config);
 
     /** @ngInject */
     function config($stateProvider, $translatePartialLoaderProvider, msApiProvider, msNavigationServiceProvider)
@@ -21,6 +20,7 @@
                     }
                 }
             });
+            
 
         // Translation
         $translatePartialLoaderProvider.addPart('app/main/customers');
@@ -46,9 +46,4 @@
             weight   : 1
         });
     }
-
-    function run($http) {
-        $http.defaults.headers.common['Authorization'] = 'Basic ' + btoa("d@gmail.com:123"); // TODO remove after adding login
-    }
-
 })();

@@ -59,8 +59,8 @@
 <table class="simple list-view rtl" ng-if="vm.customers">
     <thead>
         <tr>
-            <th></th>
-            <th translate="CUSTOMERS.ID">ID</th>
+            <th hide-xs></th>
+            <th hide-xs translate="CUSTOMERS.ID">ID</th>
             <th translate="CUSTOMERS.NAME">Name</th>
             <th translate="CUSTOMERS.FAMILY">Family</th>
             <th hide-xs translate="CUSTOMERS.PHONE">Phone Number</th>
@@ -71,10 +71,10 @@
 
     <tbody>
         <tr ng-repeat="customer in vm.customers | filter:global.search" ng-click="vm.select(customer)" ng-class="{'selected' : vm.selected === file}">
-            <td class="file-icon">
+            <td class="file-icon" hide-xs>
                 <i class="icon-account-box"></i>
             </td>
-            <td class="customerid">{{customer.id_number}}</td>
+            <td class="customerid" hide-xs>{{customer.id_number}}</td>
             <td class="name">{{customer.first_name}}</td>
             <td class="family">{{customer.last_name}}</td>
             <td class="owner" hide-xs>{{customer.phone}}</td>

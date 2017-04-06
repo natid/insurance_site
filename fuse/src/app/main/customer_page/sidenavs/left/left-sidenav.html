@@ -9,12 +9,14 @@
     <!-- TOOLBAR TOP -->
     <div class="md-toolbar-tools md-toolbar-tools-top">
         <div layout="row" >
+            <div layout="column">
                 <div>
                 {{vm.customer.first_name}} {{vm.customer.last_name}}
                 </div>
                 <div class="secondary-text">
                     {{' '}} {{vm.customer.id_number}}
                 </div>
+            </div>
             <md-button layout-align="end center" class="md-raised md-primary" ng-click="vm.sendToCellosign(vm.customer.id)">
                         <span>שלח לסלוסיין</span>
             </md-button>

@@ -28,8 +28,7 @@
 
         vm.getCompanyData = function(companyId) {
             CustomersService.getCompanyData(customerId, companyId).then(function(response) {
-                vm.companiesData[companyId] = response;
-                console.log(vm.companiesData);
+                vm.companiesData[companyId] = response;                
             })
         }
 
