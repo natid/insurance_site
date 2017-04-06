@@ -134,7 +134,7 @@ def get_attachments_for_message(mails):
                         userId="me", messageId=mail["id"],id=part["body"]["attachmentId"]).execute()
                     attachment = response["data"]
                 decoded_attachment = base64.urlsafe_b64decode(attachment.encode("UTF-8"))
-                attachments_for_mail.append(decoded_attachment)
+                attachments_for_mail.append((decoded_attachment, part["filename"]))
         attachments.append((mail,attachments_for_mail))
     return attachments
 

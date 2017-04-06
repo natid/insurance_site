@@ -119,7 +119,7 @@ def get_response_mail_data(request):
         mail_resp["attachments"] = []
 
         for attachment in attachments:
-            mail_resp["attachments"].append(attachment.attachment)
+            mail_resp["attachments"].append({"data": attachment.attachment, "filename": attachment.filename})
 
         response.append(mail_resp)
 
