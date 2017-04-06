@@ -53,6 +53,7 @@ class ResponseMail(models.Model):
 class Attachment(models.Model):
     response_mail = models.ForeignKey(ResponseMail)
     attachment = models.TextField(max_length=50000)
+    filename = models.CharField(max_length=100)
 
     def __str__(self):
         return "Attachment: {}".format(self.id)
