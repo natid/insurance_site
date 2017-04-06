@@ -38,11 +38,9 @@
 
             </div>
             <!-- / START -->
-             <div ng-if="vm.currentMailData" style="white-space:pre">
-                    {{vm.currentMailData}}
-             </div>
+
             <!-- CHAT -->
-            <div ng-if="!vm.chat" class="chat" layout="column" flex>
+            <div ng-if="vm.currentMailData" class="chat" layout="column" flex>
 
                 <!-- CHAT TOOLBAR -->
                 <md-toolbar class="chat-toolbar">
@@ -50,15 +48,15 @@
                     <div class="md-toolbar-tools">
 
                         <!-- RESPONSIVE CHATS BUTTON-->
-                        <md-button class="hide-gt-md responsive-chats-button md-icon-button"
+                        <!--<md-button class="hide-gt-md responsive-chats-button md-icon-button"
                                    ng-click="vm.toggleLeftSidenavView(false);vm.toggleSidenav('left-sidenav')"
                                    aria-label="chats button">
                             <md-icon md-font-icon="icon-hangouts s36"></md-icon>
-                        </md-button>
+                        </md-button>-->
                         <!-- / RESPONSIVE CHATS BUTTON-->
 
                         <!-- CHAT CONTACT-->
-                        <div class="chat-contact" layout="row" layout-align="start center"
+                        <!--<div class="chat-contact" layout="row" layout-align="start center"
                              ng-click="vm.toggleSidenav('right-sidenav')">
 
                             <div class="avatar-wrapper">
@@ -76,10 +74,10 @@
                                 {{vm.contacts.getById(vm.chatContactId).name}}
                             </div>
 
-                        </div>
+                        </div>-->
                         <!-- / CHAT CONTACT-->
 
-                        <md-menu md-position-mode="target-right target">
+                        <!--<md-menu md-position-mode="target-right target">
 
                             <md-button class="md-icon-button" ng-click="$mdOpenMenu()"
                                        aria-label="more">
@@ -99,14 +97,15 @@
                                 </md-menu-item>
                             </md-menu-content>
 
-                        </md-menu>
+                        </md-menu>-->
 
                     </div>
                 </md-toolbar>
                 <!-- / CHAT TOOLBAR -->
 
                 <!-- CHAT CONTENT -->
-                <md-content id="chat-content" flex ms-scroll>
+                <md-content id="chat-content" ng-if="vm.currentMailData" flex ms-scroll style="white-space:pre">
+                    {{vm.currentMailData.text}}
 
                     <!-- CHAT MESSAGES -->
                     <div class="chat-messages" ng-if="vm.chat">
@@ -140,7 +139,7 @@
                 <div class="chat-footer flex-noshrink" layout="row" layout-align="center center">
 
                     <!-- REPLY FORM -->
-                    <form ng-submit="vm.reply()" flex class="reply-form" layout="row" layout-align="start center">
+                    <!--<form ng-submit="vm.reply()" flex class="reply-form" layout="row" layout-align="start center">
 
                         <md-input-container flex md-no-float>
                             <textarea ng-keyup="vm.reply($event)"
@@ -157,9 +156,11 @@
                             <md-icon md-font-icon="icon-send"></md-icon>
                         </md-button>
 
-                    </form>
+                    </form>-->
                     <!-- / REPLY FORM -->
-
+                    <md-button ng-repeat="data in vm.currentMailData.attachments" class="md-raised md-primary" ng-click="vm.downlodFile('file_'+$index,data)">
+                        <span>קובץ מספר {{$index}}</span>
+                    </md-button>
                 </div>
                 <!-- / CHAT FOOTER-->
 

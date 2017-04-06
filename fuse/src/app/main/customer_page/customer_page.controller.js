@@ -36,6 +36,19 @@
         vm.sendToCellosign = function(customerId) {
             CustomersService.sendToCellosign(customerId);
         }
+
+        vm.downlodFile = function(filename, data) {
+            var element = document.createElement('a');
+            element.setAttribute('href', 'data:text/plain;base64,' + encodeURIComponent(data));
+            element.setAttribute('download', filename);
+
+            element.style.display = 'none';
+            document.body.appendChild(element);
+
+            element.click();
+
+            document.body.removeChild(element);
+        }
         // Data
         // Methods
       
