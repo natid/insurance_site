@@ -33,6 +33,9 @@
                 "email_address":email_address
             })
                 .then(function(response) {
+                    if (response.data && response.data.id) {
+                        $rootScope.agentId = response.data.id
+                    }
                     d.resolve(response);
                 }, function(response) {
                     d.reject(response);
@@ -46,6 +49,7 @@
             var d = $q.defer();
             $http.post(baseURL + '/auth_api/login/', { username: username, password: password })
                 .then(function(response) {
+                    $rootScope.agentId = response.data.id
                     d.resolve(response);
                 }, function(response) {
                     d.reject(response);

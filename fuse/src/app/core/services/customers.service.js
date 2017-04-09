@@ -6,8 +6,8 @@
         .module('app.customers')
         .service('CustomersService', CustomersService);
     //for production
-    // var baseURL = 'https://poly-wizz.co.il';
-   var baseURL = '';
+    var baseURL = 'https://poly-wizz.co.il';
+//    var baseURL = '';
     // var baseURL = 'http://localhost:8000'
     /** @ngInject */
     function CustomersService($q, $http)
@@ -29,9 +29,9 @@
                 id_number:id_number,
                 first_name:first_name,
                 last_name:last_name,
-                phone_number:phone,
-                notes:notes,
-                status:status
+                phone_number:phone  ? phone : '',
+                notes:notes  ? notes : '',
+                status:status ? status : ''
             }
             $http({
                     method: 'POST',
