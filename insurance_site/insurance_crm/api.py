@@ -9,7 +9,7 @@ from rest_framework.response import Response
 from permissions import IsTheAgent
 from rest_framework.decorators import detail_route, list_route
 from rest_framework.decorators import api_view
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 import json
 import base64
 
@@ -38,9 +38,30 @@ class ClientViewSet(ModelViewSet):
         return Response(serializer.data)
     """
 
+    def create(self, request):
+        agent_id = Agent.objects.filter(user=request.user)[0].id
+
+        Client.objects.create(first_name=request.POST.get('first_name',''),
+                      last_name=request.POST.get('last_name',''),
+                      phone_number=request.POST.get('phone_number',''),
+                      agent_id=agent_id,
+                      notes=request.POST.get('notes',''),
+                      status=request.POST.get('status',''),
+                      id_number=request.POST.get('id_number',''),
+                      )
+
+        return HttpResponse(status=200)
+
+'''
+    def retrieve(self, request, pk=None):
+        client = Client.objects.filter(agent__user__id=pk)[0]
+        serializer = ClientSerializer(client)
+        return Response(serializer.data)
+'''
+
     def get_queryset(self):
-        #return Client.objects.filter(agent__user=self.request.user)
-        return Client.objects.all()
+        return Client.objects.filter(agent__user=self.request.user)
+        #return Client.objects.all()
 
 
 class AgentViewSet(ModelViewSet):
