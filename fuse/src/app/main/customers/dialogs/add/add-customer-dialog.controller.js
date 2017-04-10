@@ -7,7 +7,7 @@
         .controller('AddCustomerController', AddCustomerController);
 
     /** @ngInject */
-    function AddCustomerController($mdDialog, event, customers, CustomersService)
+    function AddCustomerController($mdDialog, event, customers, CustomersService, $rootScope)
     {
         var vm = this;
 
@@ -25,7 +25,7 @@
          * Add New Customer
          */
         function addCustomer() {
-            var agent_id = 1; // TODO USE REAL VALUE
+            var agent_id = $rootScope.agentId; // TODO USE REAL VALUE
             CustomersService.addCustomer(agent_id, vm.customer.id, vm.customer.first_name, vm.customer.last_name, vm.customer.phone, vm.customer.notes, vm.customer.status)
                 .then(function(response){
                     customers.push(new CustomersService.Customer(vm.customer.id, vm.customer.first_name, vm.customer.last_name, vm.customer.phone, vm.customer.status, vm.customer.notes));

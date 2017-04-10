@@ -16,6 +16,6 @@ urlpatterns.append(url(r'return_cellosign_pdf', get_pdf_from_cellosign))
 #TEMPORARY FOR TESTING
 urlpatterns.append(url(r'run_mail_scanner/', run_mail_scanner))
 #urlpatterns.append(url(r'^client_list', TemplateView.as_view(template_name="insurance_crm/client_list.html")))
-urlpatterns.append(url(r'^fuse/', return_main_page))
+urlpatterns.append(url(r'^fuse/', TemplateView.as_view(template_name="index.html")))
 urlpatterns.append(url(r'insurance_company_list/', insurance_company_list))
 urlpatterns.append(url(r'mail_data/', get_response_mail_data))

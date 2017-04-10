@@ -13,7 +13,7 @@ from django.db import IntegrityError
 
 class LoginView(views.APIView):
 
-    @method_decorator(csrf_protect)
+    #@method_decorator(csrf_protect)
     def post(self, request):
         user = authenticate(
             username=request.data.get("username"),
