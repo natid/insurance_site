@@ -29,7 +29,8 @@ def run_mail_scanner(request):
 @csrf_exempt
 #this function is after we got the confirmed signed document and it's path is in the DB
 def get_pdf_from_cellosign(request):
-    client = dal_django.get_client_from_id(request.POST.get("client_id"))
+    client_id = str(request.POST.get("client_id"))
+    client = dal_django.get_client_from_id(client_id)
     pdf_encoded = request.POST.get("PdfFile")
     pdf_file = base64.urlsafe_b64decode(str(pdf_encoded))
     dal_django.add_cellosign_pdf_response(client, pdf_file)

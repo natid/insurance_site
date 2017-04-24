@@ -7,7 +7,8 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 import os
-from apiclient import discovery
+from googleapiclient import discovery
+#from apiclient import discovery
 from oauth2client import client
 from oauth2client import tools
 from oauth2client.file import Storage
@@ -115,8 +116,10 @@ def get_mails_for_thread(thread):
     return get_service().users().threads().get(userId="me", id=thread["id"]).execute()["messages"]
 
 def send_mail(mail_from, message):
-    return (get_service().users().messages().send(userId="me", body=message).execute())
+    return get_service().users().messages().send(userId="me", body=message).execute()
 
+def get_raw_message_from_id(msg_id):
+    return base64.urlsafe_b64decode(get_service().users().messages().get(userId="me", id=msg_id, format='raw').execute()["raw"].encode("ASCII"))
 
 #####need to check this
 def get_attachments_for_message(mails):
@@ -135,7 +138,8 @@ def get_attachments_for_message(mails):
                     attachment = response["data"]
                 decoded_attachment = base64.urlsafe_b64decode(attachment.encode("UTF-8"))
                 attachments_for_mail.append((decoded_attachment, part["filename"]))
-        attachments.append((mail,attachments_for_mail))
+        raw_mail = get_raw_message_from_id(mail["id"])
+        attachments.append((raw_mail,attachments_for_mail))
     return attachments
 
 #get_service()
