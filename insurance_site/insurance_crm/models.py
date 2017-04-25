@@ -34,6 +34,7 @@ class Client(models.Model):
 class InsuranceCompany(models.Model):
     name = models.CharField(max_length=50)
     mail = models.CharField(max_length=50)
+    additional_domains = models.CharField(max_length=500)
     clients = models.ManyToManyField(Client, through='ResponseMail')
 
     def __str__(self):

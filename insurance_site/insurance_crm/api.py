@@ -116,7 +116,10 @@ def convert_raw_message_to_html(raw_msg):
                 try:
                     payload = quopri.decodestring(part.get_payload()).decode(charset)
                 except Exception:
-                    payload = quopri.decodestring(part.get_payload()).decode('utf-8')
+                    try:
+                        payload = quopri.decodestring(part.get_payload()).decode('utf-8')
+                    except:
+                        continue
             else:  # assume ascii
                 payload = quopri.decodestring(part.get_payload()).decode('ascii')
             payload = payload.replace('\n', '<br>')
@@ -150,6 +153,7 @@ def get_response_mail_data(request):
         else:
             mail_resp["text"] = base64.urlsafe_b64decode(data)
         '''
+
 
         mail_resp["text"] = "".join(convert_raw_message_to_html(mail_data))
 

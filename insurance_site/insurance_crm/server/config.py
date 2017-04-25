@@ -11,7 +11,7 @@ APPLICATION_NAME = 'Gmail API Python Quickstart'
 #the only path available in AWS lambda
 HOME_DIR = "/tmp"
 
-GMAIL_QUERY = "label=Inbox is:unread"
+GMAIL_QUERY = "label=Inbox"
 
 MESSAGE_TITLE_TEMPLATE = u" בקשה לקבלת מידע לפי חוזר הצירוף ללקוח {0} ת.ז. {1}"
 MESSAGE_BODY_TEMPLATE = """

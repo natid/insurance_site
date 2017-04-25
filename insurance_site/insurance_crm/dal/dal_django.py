@@ -13,7 +13,12 @@ def add_cellosign_pdf_response(customer, pdf_file):
     SignedPdf.objects.create(client_id = customer.id, pdf_file = pdf_file)
 
 def add_mails_to_client(mails_with_attachments, customer_id, insurance_company_domain):
-    insurance_company = [x for x in get_insurance_companies() if x.mail.split("@")[1] == insurance_company_domain][0]
+    try:
+        insurance_company = [x for x in get_insurance_companies()
+                             if x.mail.split("@")[1] == insurance_company_domain
+                             or (x.additional_domains and insurance_company_domain in x.additional_domains.split(","))][0]
+    except Exception:
+        pass
     for mail in mails_with_attachments:
         #attachments_for_db = [attachment.encode("base64") for attachment in mail[1]]
         response_mail = ResponseMail.objects.create(client_id = customer_id, insurance_company = insurance_company, mail = json.dumps(unicode(mail[0], errors='ignore')))

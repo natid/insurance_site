@@ -89,7 +89,7 @@ def get_threads_by_query(query=''):
 
     while 'nextPageToken' in response:
         page_token = response['nextPageToken']
-        response = get_service().users().threads().list(userId="me", q=query,geToken=page_token).execute()
+        response = get_service().users().threads().list(userId="me", q=query, pageToken=page_token).execute()
         threads.extend(response['threads'])
 
     return threads
