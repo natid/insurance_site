@@ -109,7 +109,7 @@ def convert_raw_message_to_html(raw_msg):
     mail = email.message_from_string(raw_msg)
     contents = []
     for part in mail.walk():
-        if part.get_content_type() == 'text/plain':
+        if part.get_content_type() in ('text/plain', 'text/html'):
             charset = part.get_content_charset()
             if charset != None:
                 print(charset)
@@ -124,9 +124,6 @@ def convert_raw_message_to_html(raw_msg):
                 payload = quopri.decodestring(part.get_payload()).decode('ascii')
             payload = payload.replace('\n', '<br>')
             contents.append(payload)
-
-        if part.get_content_type() == 'text/html':
-            contents.append(part.get_payload())
     return contents
 
 @api_view(['GET'])
