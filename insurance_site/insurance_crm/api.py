@@ -124,6 +124,9 @@ def convert_raw_message_to_html(raw_msg):
                 payload = quopri.decodestring(part.get_payload()).decode('ascii')
             payload = payload.replace('\n', '<br>')
             contents.append(payload)
+        elif "image" in part.get_content_type():
+            img_str = '<img src="data:{0};{1},{2}"/>'.format(part.get_content_type(), part.get('content-transfer-encoding', '').lower(), part.get_payload())
+            contents.append(img_str)
     return contents
 
 @api_view(['GET'])
