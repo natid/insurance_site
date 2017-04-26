@@ -75,7 +75,7 @@
                     ng-if="company.open"
                     ng-repeat-end
                     ng-repeat="data in vm.companiesData[company.id]"
-                    ng-click="vm.currentMailData = data">
+                    ng-click="vm.updateMailContent(data)">
 
             <div class="md-list-item-text">
                 <p class="name" style="text-align: right">מייל מספר {{$index}}</p>

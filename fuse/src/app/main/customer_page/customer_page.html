@@ -40,12 +40,12 @@
             <!-- / START -->
 
             <!-- CHAT -->
-            <div ng-if="vm.currentMailData" class="chat" layout="column" flex>
+            <div ng-show="vm.currentMailData" class="chat" layout="column" flex>
 
                 <!-- CHAT TOOLBAR -->
-                <md-toolbar class="chat-toolbar">
+                <!--<md-toolbar class="chat-toolbar">
 
-                    <div class="md-toolbar-tools">
+                    <div class="md-toolbar-tools">-->
 
                         <!-- RESPONSIVE CHATS BUTTON-->
                         <!--<md-button class="hide-gt-md responsive-chats-button md-icon-button"
@@ -99,38 +99,13 @@
 
                         </md-menu>-->
 
-                    </div>
-                </md-toolbar>
+                    <!--</div>
+                </md-toolbar>-->
                 <!-- / CHAT TOOLBAR -->
 
                 <!-- CHAT CONTENT -->
-                <md-content id="chat-content" ng-if="vm.currentMailData" flex ms-scroll style="white-space:pre">
-                    {{vm.currentMailData.text}}
+                <md-content id="chat-content" flex ms-scroll>
 
-                    <!-- CHAT MESSAGES -->
-                    <div class="chat-messages" ng-if="vm.chat">
-
-                        <!-- MESSAGE -->
-                        <div layout="row" ng-repeat="dialog in vm.chat" class="md-padding message-row"
-                             ng-class="dialog.who">
-
-                            <img ng-if="dialog.who ==='contact'"
-                                 ng-src="{{vm.contacts.getById(vm.chatContactId).avatar}}"
-                                 class="avatar"
-                                 alt="{{vm.contacts.getById(vm.chatContactId).name}}"/>
-
-                            <img ng-if="dialog.who ==='user'" class="avatar" ng-src="{{vm.user.avatar}}">
-
-                            <div class="bubble">
-                                <div class="message">{{dialog.message}}</div>
-                                <div class="time secondary-text">{{dialog.time | altDate}}</div>
-                            </div>
-
-                        </div>
-                        <!-- / MESSAGE -->
-
-                    </div>
-                    <!-- CHAT MESSAGES -->
 
                 </md-content>
                 <!-- / CHAT CONTENT -->

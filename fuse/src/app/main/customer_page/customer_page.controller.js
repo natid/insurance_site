@@ -48,6 +48,16 @@
 
             document.body.removeChild(element);
         }
+
+        vm.updateMailContent = function(data) {
+            if (data && data.text) {
+                vm.currentMailData = true;
+                var mailContent = $('#chat-content')[0];
+                mailContent.innerHTML = data.text;
+            } else {
+                mailContent.innerHTML = "טעינת המייל נכשלה";
+            }
+        }
         // Data
         // Methods
       
