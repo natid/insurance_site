@@ -51,7 +51,7 @@
 
         vm.updateMailContent = function(data) {
             if (data && data.text) {
-                vm.currentMailData = true;
+                vm.currentMailData = data;
                 var mailContent = $('#chat-content')[0];
                 mailContent.innerHTML = data.text;
             } else {
