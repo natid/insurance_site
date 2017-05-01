@@ -106,13 +106,17 @@ def insurance_company_list(request):
 
 
 def convert_raw_message_to_html(raw_msg):
-    mail = email.message_from_string(raw_msg)
+    try:
+        mail = email.message_from_string(raw_msg)
+    except Exception:
+        mail = email.message_from_string(raw_msg.encode("utf-8").decode("ascii", "ignore"))
     contents = []
     for part in mail.walk():
         if part.get_content_type() in ('text/plain', 'text/html'):
             charset = part.get_content_charset()
             if charset != None:
-                print(charset)
+                if charset.upper() == "ISO-8859-8-I":
+                    charset = "ISO-8859-8"
                 try:
                     payload = quopri.decodestring(part.get_payload()).decode(charset)
                 except Exception:
@@ -122,13 +126,33 @@ def convert_raw_message_to_html(raw_msg):
                         continue
             else:  # assume ascii
                 payload = quopri.decodestring(part.get_payload()).decode('ascii')
-            payload = payload.replace('\n', '<br>')
+            payload = payload.replace('\n', '<br>').replace("<br><br>","<br>")
             contents.append(payload)
         elif "image" in part.get_content_type():
             img_str = '<img src="data:{0};{1},{2}"/>'.format(part.get_content_type(), part.get('content-transfer-encoding', '').lower(), part.get_payload())
             contents.append(img_str)
     return contents
 
+'''
+<img src="data:image/jpg;base64,/9j/4QAYRXhpZgAASUkqAAgAAAAAAAAAAAAAAP... " />
+'''
+def replace_cid_images_with_html_tags(attachment, html_response):
+    new_str = html_response
+    index = new_str.lower().find("[cid:{0}".format(attachment.filename.lower()))
+    if index != -1:
+        img_str = '<img src="data:image/{0};base64,{1}"/>'.format(
+            attachment.filename[attachment.filename.rfind(".")+1:],
+            attachment.attachment)
+        new_str = new_str[:index] + img_str + new_str[index + 1 + new_str[index:].find("]"):]
+
+    index = new_str.lower().find('src="cid:{0}'.format(attachment.filename.lower()))
+    if index != -1:
+        img_str = 'src="data:image/{0};base64,{1}"'.format(
+            attachment.filename[attachment.filename.rfind(".") + 1:],
+            attachment.attachment)
+        new_str = new_str[:index] + img_str + new_str[index + 1 + new_str[index:].find('"'):]
+
+    return new_str
 @api_view(['GET'])
 def get_response_mail_data(request):
     insurance_company_id = request.GET.get("insurance_company_id")
@@ -162,7 +186,16 @@ def get_response_mail_data(request):
         mail_resp["attachments"] = []
 
         for attachment in attachments:
-            mail_resp["attachments"].append({"data": attachment.attachment, "filename": attachment.filename})
+            if attachment.filename.lower() == "signed_pdf.pdf":
+                continue
+            original_response = mail_resp["text"]
+            while True:
+                response_str = mail_resp["text"]
+                mail_resp["text"] = replace_cid_images_with_html_tags(attachment, response_str)
+                if response_str == mail_resp["text"]:
+                    break
+            if original_response == mail_resp["text"]:
+                mail_resp["attachments"].append({"data": attachment.attachment, "filename": attachment.filename})
 
         response.append(mail_resp)
 

@@ -130,6 +130,8 @@ def get_attachments_for_message(mails):
             continue
         for part in mail["payload"]["parts"]:
             if part["filename"]:
+                if part["filename"].lower() == "signed_pdf.pdf":
+                    continue
                 if part["body"].has_key("data"):
                     attachment = part["body"]["data"]
                 else:
