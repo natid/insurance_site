@@ -48,3 +48,7 @@ def store_credentials_to_db(credential_path):
         credential.credentials_file = f.read()
         credential.save()
 
+def get_all_customer_ids():
+    ids = []
+    for client in Client.objects.all():
+        ids.append((client.id, client.id_number))

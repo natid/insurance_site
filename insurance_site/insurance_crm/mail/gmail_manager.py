@@ -94,6 +94,26 @@ def get_threads_by_query(query=''):
 
     return threads
 
+def get_comapny_email(header):
+    if "<" in header["value"]:
+        return header["value"].split("<")[1][:-1]
+    else:
+        return header["value"]
+
+#hasn't been tested yet
+def try_get_customer_id_from_mails(mails):
+    customer_id = None
+    ids = dal_django.get_all_customer_ids()
+    for mail in mails:
+        raw_mail = get_raw_message_from_id(mail["id"])
+        for id in ids:
+            if id[1] in raw_mail:
+                if customer_id is not None:
+                    raise Exception("an emial with 2 ids was found!!!!! need to do the hash redesign...")
+                customer_id = id[0]
+    return customer_id
+
+
 def get_mail_details(mails):
     details = {}
     for mail in mails:
@@ -101,13 +121,16 @@ def get_mail_details(mails):
             if header["name"] == "To" and "+" in header["value"]:
                 details["customer_id"] = header["value"].split("+")[1].split("@")[0].replace("_", " ")
             if header["name"] == "From":
-                if "<" in header["value"]:
-                    details["company_email"] = header["value"].split("<")[1][:-1]
-                else:
-                    details["company_email"] = header["value"]
+                details["comapny_email"] = get_comapny_email(header)
+
+    if not details.has_key("customer_id"):
+        customer_id = try_get_customer_id_from_mails(mails)
+        if customer_id:
+            details["customer_id"] = customer_id
 
     if set(("customer_id", "company_email")) == set(details):
         return details
+
 
 def set_thread_as_read(thread):
     return get_service().users().threads().modify(userId="me", id=thread['id'],body={'removeLabelIds': ["INBOX"]}).execute()
@@ -124,7 +147,6 @@ def send_mail(mail_from, message):
 def get_raw_message_from_id(msg_id):
     return base64.urlsafe_b64decode(get_service().users().messages().get(userId="me", id=msg_id, format='raw').execute()["raw"].encode("ASCII"))
 
-#####need to check this
 def get_attachments_for_message(mails):
     attachments = []
     for mail in mails:
@@ -146,5 +168,3 @@ def get_attachments_for_message(mails):
         raw_mail = get_raw_message_from_id(mail["id"])
         attachments.append((raw_mail,attachments_for_mail))
     return attachments
-
-#get_service()
