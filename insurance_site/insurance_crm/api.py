@@ -4,15 +4,16 @@ from rest_framework.generics import ListAPIView
 
 from .serializers import ClientSerializer, AgentSerializer, ResponseMailSerializer
 from .models import Client, Agent, ResponseMail, InsuranceCompany, Attachment
-from rest_framework.request import Request
 from rest_framework.response import Response
 from permissions import IsTheAgent
-from rest_framework.decorators import detail_route, list_route
 from rest_framework.decorators import api_view
 from django.http import JsonResponse, HttpResponse
 import json
 import email
 import quopri
+from insurance_crm.mail import gmail_manager
+from insurance_crm.dal import dal_django
+
 
 class ResponseMailViewSet(ViewSet):
 
@@ -133,9 +134,6 @@ def convert_raw_message_to_html(raw_msg):
             contents.append(img_str)
     return contents
 
-'''
-<img src="data:image/jpg;base64,/9j/4QAYRXhpZgAASUkqAAgAAAAAAAAAAAAAAP... " />
-'''
 def replace_cid_images_with_html_tags(attachment, html_response):
     new_str = html_response
     index = new_str.lower().find("[cid:{0}".format(attachment.filename.lower()))
@@ -153,6 +151,7 @@ def replace_cid_images_with_html_tags(attachment, html_response):
         new_str = new_str[:index] + img_str + new_str[index + 1 + new_str[index:].find('"'):]
 
     return new_str
+
 @api_view(['GET'])
 def get_response_mail_data(request):
     insurance_company_id = request.GET.get("insurance_company_id")
@@ -200,3 +199,38 @@ def get_response_mail_data(request):
         response.append(mail_resp)
 
     return JsonResponse(response, safe=False)
+
+#################################################################################33
+#helper functions - didn't test them yet
+
+def remove_duplicate_response_mails():
+    responses = []
+    to_delete = []
+    for response in ResponseMail.objects.all():
+        responses.append(response)
+
+    for response1 in responses:
+        for response2 in responses:
+            if response1.id != response2.id and response1.mail == response2.mail:
+                to_delete.append(response2)
+                break
+
+    to_delete = set(to_delete)
+    for mail in to_delete:
+        mail.delete()
+
+def rescan_mail_inbox():
+    #remove all responses first
+    for response in ResponseMail.objects.all():
+        response.delete()
+
+    #rescan all of the mails
+    all_threads = gmail_manager.get_threads_by_query()
+    for thread in all_threads:
+        mails = gmail_manager.get_mails_for_thread(thread)
+        mail_details = gmail_manager.get_mail_details(mails)
+        mails_with_attachments = gmail_manager.get_attachments_for_message(mails)
+        if mail_details:
+            dal_django.add_mails_to_client(mails_with_attachments, mail_details["customer_id"], mail_details["company_email"].split("@")[1], False)
+        else:
+            gmail_manager.set_thread_as_ignored(thread)

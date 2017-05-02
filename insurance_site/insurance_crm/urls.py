@@ -1,4 +1,5 @@
-from .api import ClientViewSet, AgentViewSet, ResponseMailViewSet, insurance_company_list, get_response_mail_data
+from .api import ClientViewSet, AgentViewSet, ResponseMailViewSet, insurance_company_list, \
+    get_response_mail_data, remove_duplicate_response_mails, rescan_mail_inbox
 from rest_framework.routers import DefaultRouter
 from views import send_cellosign_request, run_mail_scanner, get_pdf_from_cellosign, return_main_page
 from django.conf.urls import url, include
@@ -19,3 +20,6 @@ urlpatterns.append(url(r'run_mail_scanner/', run_mail_scanner))
 urlpatterns.append(url(r'^fuse/', TemplateView.as_view(template_name="index.html")))
 urlpatterns.append(url(r'insurance_company_list/', insurance_company_list))
 urlpatterns.append(url(r'mail_data/', get_response_mail_data))
+urlpatterns.append(url(r'remove_duplicate_response_mails/', remove_duplicate_response_mails))
+urlpatterns.append(url(r'rescan_mail_inbox/', rescan_mail_inbox))
+
