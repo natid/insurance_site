@@ -203,7 +203,7 @@ def get_response_mail_data(request):
 #################################################################################33
 #helper functions - didn't test them yet
 
-def remove_duplicate_response_mails():
+def remove_duplicate_response_mails(request):
     responses = []
     to_delete = []
     for response in ResponseMail.objects.all():
@@ -219,7 +219,9 @@ def remove_duplicate_response_mails():
     for mail in to_delete:
         mail.delete()
 
-def rescan_mail_inbox():
+    return HttpResponse("OK")
+
+def rescan_mail_inbox(request):
     #remove all responses first
     for response in ResponseMail.objects.all():
         response.delete()
@@ -228,9 +230,15 @@ def rescan_mail_inbox():
     all_threads = gmail_manager.get_threads_by_query()
     for thread in all_threads:
         mails = gmail_manager.get_mails_for_thread(thread)
-        mail_details = gmail_manager.get_mail_details(mails)
-        mails_with_attachments = gmail_manager.get_attachments_for_message(mails)
-        if mail_details:
-            dal_django.add_mails_to_client(mails_with_attachments, mail_details["customer_id"], mail_details["company_email"].split("@")[1], False)
-        else:
+        allocated = False
+        for mail in mails:
+            mail = [mail]
+            mail_details = gmail_manager.get_mail_details(mail)
+            mails_with_attachments = gmail_manager.get_attachments_for_message(mail)
+            if mail_details:
+                allocated = True
+                dal_django.add_mails_to_client(mails_with_attachments, mail_details["customer_id"], mail_details["company_email"].split("@")[1], True)
+        if not allocated:
             gmail_manager.set_thread_as_ignored(thread)
+
+    return HttpResponse("OK")

@@ -101,30 +101,32 @@ def get_comapny_email(header):
         return header["value"]
 
 #hasn't been tested yet
-def try_get_customer_id_from_mails(mails):
+def try_get_customer_id_from_mails(mails, ids):
     customer_id = None
-    ids = dal_django.get_all_customer_ids()
     for mail in mails:
-        raw_mail = get_raw_message_from_id(mail["id"])
+        raw_mail = unicode(get_raw_message_from_id(mail["id"]), errors='ignore')
         for id in ids:
-            if id[1] in raw_mail:
-                if customer_id is not None:
-                    raise Exception("an emial with 2 ids was found!!!!! need to do the hash redesign...")
+            if id[1] in raw_mail or str(int(id[1])) in raw_mail:
+                if customer_id != id[0] and customer_id is not None:
+                    return #raise Exception("an emial with 2 ids was found!!!!! need to do the hash redesign...")
                 customer_id = id[0]
     return customer_id
 
 
 def get_mail_details(mails):
+    ids = dal_django.get_all_customer_ids()
     details = {}
     for mail in mails:
         for header in mail["payload"]["headers"]:
             if header["name"] == "To" and "+" in header["value"]:
-                details["customer_id"] = header["value"].split("+")[1].split("@")[0].replace("_", " ")
+                customer_id = header["value"].split("+")[1].split("@")[0].replace("_", " ")
+                if customer_id in [x[0] for x in ids]:
+                    details["customer_id"] = customer_id
             if header["name"] == "From":
-                details["comapny_email"] = get_comapny_email(header)
+                details["company_email"] = get_comapny_email(header)
 
     if not details.has_key("customer_id"):
-        customer_id = try_get_customer_id_from_mails(mails)
+        customer_id = try_get_customer_id_from_mails(mails, ids)
         if customer_id:
             details["customer_id"] = customer_id
 
@@ -136,7 +138,7 @@ def set_thread_as_read(thread):
     return get_service().users().threads().modify(userId="me", id=thread['id'],body={'removeLabelIds': ["INBOX"]}).execute()
 
 def set_thread_as_ignored(thread):
-    return get_service().users().threads().modify(userId="me", id=thread['id'],body={'addLabelIds': ["IGNORED"]}).execute()
+    return get_service().users().threads().modify(userId="me", id=thread['id'],body={'addLabelIds': ["Label_2"]}).execute()
 
 def get_mails_for_thread(thread):
     return get_service().users().threads().get(userId="me", id=thread["id"]).execute()["messages"]

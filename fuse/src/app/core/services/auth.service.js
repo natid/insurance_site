@@ -6,9 +6,9 @@
         .module('fuse')
         .service('AuthenticationService', AuthenticationService);
     //for production
-   var baseURL = 'https://poly-wizz.co.il';
+   //var baseURL = 'https://poly-wizz.co.il';
 //    var baseURL = ''; // local with build
-   //  var baseURL = 'http://localhost:8000' // local with serve
+     var baseURL = 'http://localhost:8000' // local with serve
     /** @ngInject */
 
     function AuthenticationService($http, $cookies, $rootScope, $timeout, $q) {
