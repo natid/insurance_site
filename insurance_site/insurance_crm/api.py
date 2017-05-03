@@ -221,7 +221,6 @@ def remove_duplicate_response_mails(request):
 
     return HttpResponse("OK")
 
-
 def rescan_mail_inbox(request):
     #remove all responses first
     for response in ResponseMail.objects.all():

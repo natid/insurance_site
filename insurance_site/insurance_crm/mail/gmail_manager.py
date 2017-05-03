@@ -111,7 +111,6 @@ def try_get_customer_id_from_mails(mail, ids):
             customer_id = id[0]
     return customer_id
 
-
 def get_mail_details(mail):
     ids = dal_django.get_all_customer_ids()
     details = {}
