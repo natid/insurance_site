@@ -52,3 +52,4 @@ def get_all_customer_ids():
     ids = []
     for client in Client.objects.all():
         ids.append((client.id, client.id_number))
+    return ids

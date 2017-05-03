@@ -101,30 +101,30 @@ def get_comapny_email(header):
         return header["value"]
 
 #hasn't been tested yet
-def try_get_customer_id_from_mails(mails):
+def try_get_customer_id_from_mails(mail, ids):
     customer_id = None
-    ids = dal_django.get_all_customer_ids()
-    for mail in mails:
-        raw_mail = get_raw_message_from_id(mail["id"])
-        for id in ids:
-            if id[1] in raw_mail:
-                if customer_id is not None:
-                    raise Exception("an emial with 2 ids was found!!!!! need to do the hash redesign...")
-                customer_id = id[0]
+    raw_mail = unicode(get_raw_message_from_id(mail["id"]), errors='ignore')
+    for id in ids:
+        if id[1] in raw_mail or str(int(id[1])) in raw_mail:
+            if customer_id != id[0] and customer_id is not None:
+                return #raise Exception("an emial with 2 ids was found!!!!! need to do the hash redesign...")
+            customer_id = id[0]
     return customer_id
 
 
-def get_mail_details(mails):
+def get_mail_details(mail):
+    ids = dal_django.get_all_customer_ids()
     details = {}
-    for mail in mails:
-        for header in mail["payload"]["headers"]:
-            if header["name"] == "To" and "+" in header["value"]:
-                details["customer_id"] = header["value"].split("+")[1].split("@")[0].replace("_", " ")
-            if header["name"] == "From":
-                details["comapny_email"] = get_comapny_email(header)
+    for header in mail["payload"]["headers"]:
+        if header["name"] == "To" and "+" in header["value"]:
+            customer_id = header["value"].split("+")[1].split("@")[0].replace("_", " ")
+            if customer_id in [x[0] for x in ids]:
+                details["customer_id"] = customer_id
+        if header["name"] == "From":
+            details["company_email"] = get_comapny_email(header)
 
     if not details.has_key("customer_id"):
-        customer_id = try_get_customer_id_from_mails(mails)
+        customer_id = try_get_customer_id_from_mails(mail, ids)
         if customer_id:
             details["customer_id"] = customer_id
 
@@ -136,7 +136,7 @@ def set_thread_as_read(thread):
     return get_service().users().threads().modify(userId="me", id=thread['id'],body={'removeLabelIds': ["INBOX"]}).execute()
 
 def set_thread_as_ignored(thread):
-    return get_service().users().threads().modify(userId="me", id=thread['id'],body={'addLabelIds': ["IGNORED"]}).execute()
+    return get_service().users().threads().modify(userId="me", id=thread['id'],body={'addLabelIds': ["Label_2"]}).execute()
 
 def get_mails_for_thread(thread):
     return get_service().users().threads().get(userId="me", id=thread["id"]).execute()["messages"]
@@ -147,24 +147,37 @@ def send_mail(mail_from, message):
 def get_raw_message_from_id(msg_id):
     return base64.urlsafe_b64decode(get_service().users().messages().get(userId="me", id=msg_id, format='raw').execute()["raw"].encode("ASCII"))
 
-def get_attachments_for_message(mails):
+
+def get_attachments_for_message(mail):
     attachments = []
-    for mail in mails:
-        attachments_for_mail = []
-        if not mail["payload"].has_key("parts"):
-            continue
-        for part in mail["payload"]["parts"]:
-            if part["filename"]:
-                if part["filename"].lower() == "signed_pdf.pdf":
-                    continue
-                if part["body"].has_key("data"):
-                    attachment = part["body"]["data"]
-                else:
-                    response = get_service().users().messages().attachments().get(
-                        userId="me", messageId=mail["id"],id=part["body"]["attachmentId"]).execute()
-                    attachment = response["data"]
-                decoded_attachment = base64.urlsafe_b64decode(attachment.encode("UTF-8"))
-                attachments_for_mail.append((decoded_attachment, part["filename"]))
+    attachments_for_mail = []
+    if not mail["payload"].has_key("parts"):
+        return
+    for part in mail["payload"]["parts"]:
+        if part["filename"]:
+            if part["filename"].lower() == "signed_pdf.pdf":
+                continue
+            if part["body"].has_key("data"):
+                attachment = part["body"]["data"]
+            else:
+                response = get_service().users().messages().attachments().get(
+                    userId="me", messageId=mail["id"],id=part["body"]["attachmentId"]).execute()
+                attachment = response["data"]
+            decoded_attachment = base64.urlsafe_b64decode(attachment.encode("UTF-8"))
+            attachments_for_mail.append((decoded_attachment, part["filename"]))
         raw_mail = get_raw_message_from_id(mail["id"])
         attachments.append((raw_mail,attachments_for_mail))
     return attachments
+
+
+def insert_mail_to_db(thread):
+    mails = get_mails_for_thread(thread)
+    allocated = False
+    for mail in mails:
+        mail_details = get_mail_details(mail)
+        mails_with_attachments = get_attachments_for_message(mail)
+        if mail_details and mails_with_attachments:
+            allocated = True
+            dal_django.add_mails_to_client(mails_with_attachments, mail_details["customer_id"],
+                                           mail_details["company_email"].split("@")[1], True)
+    return allocated

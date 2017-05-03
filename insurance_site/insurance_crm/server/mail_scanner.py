@@ -19,12 +19,10 @@ class MailScanner():
             self._daily_mails_parser()
             sleep(self.hours_interval*3600)
 
+
     def _daily_mails_parser(self):
         threads = gmail_manager.get_threads_by_query(query=config.GMAIL_QUERY)
         for thread in threads:
-            mails = gmail_manager.get_mails_for_thread(thread)
-            mail_details = gmail_manager.get_mail_details(mails)
-            mails_with_attachments = gmail_manager.get_attachments_for_message(mails)
-            if mail_details:
-                dal_django.add_mails_to_client(mails_with_attachments, mail_details["customer_id"], mail_details["company_email"].split("@")[1])
+            allocated = gmail_manager.insert_mail_to_db(thread)
+            if allocated:
                 gmail_manager.set_thread_as_read(thread)
