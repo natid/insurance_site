@@ -117,7 +117,7 @@ def get_mail_details(mail):
     for header in mail["payload"]["headers"]:
         if header["name"] == "To" and "+" in header["value"]:
             customer_id = header["value"].split("+")[1].split("@")[0].replace("_", " ")
-            if customer_id in [x[0] for x in ids]:
+            if int(customer_id) in [x[0] for x in ids]:
                 details["customer_id"] = customer_id
         if header["name"] == "From":
             details["company_email"] = get_comapny_email(header)
