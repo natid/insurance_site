@@ -36,7 +36,7 @@ def get_pdf_from_cellosign(request):
     dal_django.add_cellosign_pdf_response(client, pdf_file)
     message_title = config.MESSAGE_TITLE_TEMPLATE.format(client.first_name + " " + client.last_name, client.id_number)
     message_body = config.MESSAGE_BODY_TEMPLATE.format(client.agent.first_name + client.agent.last_name, client.agent.license_number, client.agent.phone_number)
-    sender_email = config.MAIL_ADDRESS.replace("@", "+{0}@".format(str(client.id)))
+    sender_email = config.MAIL_ADDRESS
     for company in dal_django.get_insurance_companies():
         message = gmail_manager.create_message_with_attachment(
             sender_email, company.mail, message_title, message_body, pdf_file)

@@ -117,11 +117,15 @@ def convert_raw_message_to_html(raw_msg):
             if charset != None:
                 if charset.upper() == "ISO-8859-8-I":
                     charset = "ISO-8859-8"
+                payload_raw = part.get_payload()
+                encoding = part.get('content-transfer-encoding', '').lower()
+                if encoding == 'base64':
+                    payload_raw = payload_raw.decode('base64')
                 try:
-                    payload = quopri.decodestring(part.get_payload()).decode(charset)
+                    payload = quopri.decodestring(payload_raw).decode(charset)
                 except Exception:
                     try:
-                        payload = quopri.decodestring(part.get_payload()).decode('utf-8')
+                        payload = quopri.decodestring(payload_raw).decode('utf-8')
                     except:
                         continue
             else:  # assume ascii
