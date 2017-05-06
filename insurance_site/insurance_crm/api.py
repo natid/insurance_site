@@ -12,7 +12,6 @@ import json
 import email
 import quopri
 from insurance_crm.mail import gmail_manager
-from insurance_crm.dal import dal_django
 
 
 class ResponseMailViewSet(ViewSet):
@@ -223,8 +222,8 @@ def remove_duplicate_response_mails(request):
 
 def rescan_mail_inbox(request):
     #remove all responses first
-    #for response in ResponseMail.objects.all():
-    #    response.delete()
+    for response in ResponseMail.objects.all():
+        response.delete()
 
     #rescan all of the mails
     all_threads = gmail_manager.get_threads_by_query('!label:mapped')
