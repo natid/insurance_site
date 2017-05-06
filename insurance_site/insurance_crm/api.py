@@ -129,7 +129,10 @@ def convert_raw_message_to_html(raw_msg):
                     except:
                         continue
             else:  # assume ascii
-                payload = quopri.decodestring(part.get_payload()).decode('ascii')
+                try:
+                    payload = quopri.decodestring(part.get_payload()).decode('ascii')
+                except:
+                    payload = part.get_payload()
             payload = payload.replace('\n', '<br>').replace("<br><br>","<br>")
             contents.append(payload)
         elif "image" in part.get_content_type():
