@@ -134,8 +134,15 @@ def get_mail_details(mail):
 def set_thread_as_read(thread):
     return get_service().users().threads().modify(userId="me", id=thread['id'],body={'removeLabelIds': ["INBOX"]}).execute()
 
-def set_thread_as_ignored(thread):
-    return get_service().users().threads().modify(userId="me", id=thread['id'],body={'addLabelIds': ["Label_2"]}).execute()
+def set_thread_as_ignored(thread, ignored):
+    if ignored:
+        add_remove = 'addLabelIds'
+    else:
+        add_remove = 'removeLabelIds'
+    return get_service().users().threads().modify(userId="me", id=thread['id'],body={add_remove: ["Label_2"]}).execute()
+
+def set_thread_as_mapped(thread):
+    return get_service().users().threads().modify(userId="me", id=thread['id'],body={'addLabelIds': ["Label_3"]}).execute()
 
 def get_mails_for_thread(thread):
     return get_service().users().threads().get(userId="me", id=thread["id"]).execute()["messages"]

@@ -227,10 +227,13 @@ def rescan_mail_inbox(request):
     #    response.delete()
 
     #rescan all of the mails
-    all_threads = gmail_manager.get_threads_by_query()
+    all_threads = gmail_manager.get_threads_by_query('!label:mapped')
     for thread in all_threads:
+        gmail_manager.set_thread_as_ignored(thread, False)
         allocated = gmail_manager.insert_mail_to_db(thread)
         if not allocated:
-            gmail_manager.set_thread_as_ignored(thread)
+            gmail_manager.set_thread_as_ignored(thread, True)
+        else:
+            gmail_manager.set_thread_as_mapped(thread)
 
     return HttpResponse("OK")

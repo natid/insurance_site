@@ -26,3 +26,4 @@ class MailScanner():
             allocated = gmail_manager.insert_mail_to_db(thread)
             if allocated:
                 gmail_manager.set_thread_as_read(thread)
+                gmail_manager.set_thread_as_mapped(thread)
