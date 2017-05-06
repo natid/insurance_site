@@ -12,7 +12,6 @@ import json
 import email
 import quopri
 from insurance_crm.mail import gmail_manager
-from insurance_crm.dal import dal_django
 
 
 class ResponseMailViewSet(ViewSet):

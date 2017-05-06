@@ -157,22 +157,21 @@ def get_raw_message_from_id(msg_id):
 def get_attachments_for_message(mail):
     attachments = []
     attachments_for_mail = []
-    if not mail["payload"].has_key("parts"):
-        return
-    for part in mail["payload"]["parts"]:
-        if part["filename"]:
-            if part["filename"].lower() == "signed_pdf.pdf":
-                continue
-            if part["body"].has_key("data"):
-                attachment = part["body"]["data"]
-            else:
-                response = get_service().users().messages().attachments().get(
-                    userId="me", messageId=mail["id"],id=part["body"]["attachmentId"]).execute()
-                attachment = response["data"]
-            decoded_attachment = base64.urlsafe_b64decode(attachment.encode("UTF-8"))
-            attachments_for_mail.append((decoded_attachment, part["filename"]))
-        raw_mail = get_raw_message_from_id(mail["id"])
-        attachments.append((raw_mail,attachments_for_mail))
+    if mail["payload"].has_key("parts"):
+        for part in mail["payload"]["parts"]:
+            if part["filename"]:
+                if part["filename"].lower() == "signed_pdf.pdf":
+                    continue
+                if part["body"].has_key("data"):
+                    attachment = part["body"]["data"]
+                else:
+                    response = get_service().users().messages().attachments().get(
+                        userId="me", messageId=mail["id"],id=part["body"]["attachmentId"]).execute()
+                    attachment = response["data"]
+                decoded_attachment = base64.urlsafe_b64decode(attachment.encode("UTF-8"))
+                attachments_for_mail.append((decoded_attachment, part["filename"]))
+    raw_mail = get_raw_message_from_id(mail["id"])
+    attachments.append((raw_mail,attachments_for_mail))
     return attachments
 
 
