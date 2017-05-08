@@ -15,6 +15,9 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.conf.urls import handler404
+from django.http import HttpResponse
+from django.shortcuts import render_to_response
 from django.views.generic import TemplateView
 from django.views.decorators.csrf import ensure_csrf_cookie
 
@@ -24,3 +27,11 @@ urlpatterns = [
     url(r'^insurance_crm/', include('insurance_crm.urls')),
     url(r'^auth_api/', include('auth_api.urls')),
 ]
+
+def redirect404(request):
+    try:
+        return render_to_response("index.html")
+    except Exception,e:
+        return HttpResponse("<html><body>Error: <pre>%s</pre></body></html>" % repr(e))
+
+handler404 = redirect404
