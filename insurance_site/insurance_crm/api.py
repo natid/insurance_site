@@ -105,41 +105,6 @@ def insurance_company_list(request):
         return JsonResponse(data, safe=False)
 
 
-def convert_raw_message_to_html(raw_msg):
-    try:
-        mail = email.message_from_string(raw_msg)
-    except Exception:
-        mail = email.message_from_string(raw_msg.encode("utf-8").decode("ascii", "ignore"))
-    contents = []
-    for part in mail.walk():
-        if part.get_content_type() in ('text/plain', 'text/html'):
-            charset = part.get_content_charset()
-            if charset != None:
-                if charset.upper() == "ISO-8859-8-I":
-                    charset = "ISO-8859-8"
-                payload_raw = part.get_payload()
-                encoding = part.get('content-transfer-encoding', '').lower()
-                if encoding == 'base64':
-                    payload_raw = payload_raw.decode('base64')
-                try:
-                    payload = quopri.decodestring(payload_raw).decode(charset)
-                except Exception:
-                    try:
-                        payload = quopri.decodestring(payload_raw).decode('utf-8')
-                    except:
-                        continue
-            else:  # assume ascii
-                try:
-                    payload = quopri.decodestring(part.get_payload()).decode('ascii')
-                except:
-                    payload = part.get_payload()
-            payload = payload.replace('\n', '<br>').replace("<br><br>","<br>")
-            contents.append(payload)
-        elif "image" in part.get_content_type():
-            img_str = '<img src="data:{0};{1},{2}"/>'.format(part.get_content_type(), part.get('content-transfer-encoding', '').lower(), part.get_payload())
-            contents.append(img_str)
-    return contents
-
 def replace_cid_images_with_html_tags(attachment, html_response):
     new_str = html_response
     index = new_str.lower().find("[cid:{0}".format(attachment.filename.lower()))
@@ -184,7 +149,7 @@ def get_response_mail_data(request):
         '''
 
 
-        mail_resp["text"] = "".join(convert_raw_message_to_html(mail_data))
+        mail_resp["text"] = "".join(gmail_manager.convert_raw_message_to_html(mail_data))
 
         attachments = Attachment.objects.filter(response_mail=company_mail)
 
@@ -228,18 +193,18 @@ def remove_duplicate_response_mails(request):
     return HttpResponse("OK")
 
 def rescan_mail_inbox(request):
-    #remove all responses first
-    for response in ResponseMail.objects.all():
-        response.delete()
+    #remove all responses first - this isn't working for some reason - need to check why and fix
+    ResponseMail.objects.all().delete()
 
     #rescan all of the mails
-    all_threads = gmail_manager.get_threads_by_query('!label:mapped')
+    all_threads = gmail_manager.get_threads_by_query('')
     for thread in all_threads:
         gmail_manager.set_thread_as_ignored(thread, False)
         allocated = gmail_manager.insert_mail_to_db(thread)
         if not allocated:
             gmail_manager.set_thread_as_ignored(thread, True)
         else:
+            gmail_manager.set_thread_as_read(thread)
             gmail_manager.set_thread_as_mapped(thread)
 
     return HttpResponse("OK")

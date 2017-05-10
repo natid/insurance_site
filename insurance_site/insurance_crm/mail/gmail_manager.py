@@ -14,6 +14,8 @@ from oauth2client import tools
 from oauth2client.file import Storage
 import httplib2
 from insurance_crm.dal import dal_django
+import email
+import quopri
 
 _credentials_loaded_from_db = False
 
@@ -100,16 +102,25 @@ def get_comapny_email(header):
     else:
         return header["value"]
 
+
 #hasn't been tested yet
 def try_get_customer_id_from_mails(mail, ids):
     customer_id = None
-    raw_mail = unicode(get_raw_message_from_id(mail["id"]), errors='ignore')
+    raw_mail = get_raw_message_from_id(mail["id"])
+    html_mails = convert_raw_message_to_html(raw_mail)
+    html_mail=""
+    for part in html_mails:
+        html_mail += part
     for id in ids:
-        if id[1] in raw_mail or str(int(id[1])) in raw_mail:
-            if customer_id != id[0] and customer_id is not None:
-                return #raise Exception("an emial with 2 ids was found!!!!! need to do the hash redesign...")
-            customer_id = id[0]
+        try:
+            if str(id[1]) in html_mail or str(int(id[1])) in html_mail or str(id[1]) in raw_mail or str(int(id[1])) in raw_mail:
+                if customer_id != id[0] and customer_id is not None:
+                    return #raise Exception("an emial with 2 ids was found!!!!! need to do the hash redesign...")
+                customer_id = id[0]
+        except:
+            pass
     return customer_id
+
 
 def get_mail_details(mail):
     ids = dal_django.get_all_customer_ids()
@@ -119,6 +130,9 @@ def get_mail_details(mail):
             customer_id = header["value"].split("+")[1].split("@")[0].replace("_", " ")
             if int(customer_id) in [x[0] for x in ids]:
                 details["customer_id"] = customer_id
+        for id in ids:
+            if str(int(id[1])) in header["value"] or id[1] in header["value"]:
+                details["customer_id"] = id[0]
         if header["name"] == "From":
             details["company_email"] = get_comapny_email(header)
 
@@ -186,3 +200,38 @@ def insert_mail_to_db(thread):
             dal_django.add_mails_to_client(mails_with_attachments, mail_details["customer_id"],
                                            mail_details["company_email"].split("@")[1], True)
     return allocated
+
+def convert_raw_message_to_html(raw_msg):
+    try:
+        mail = email.message_from_string(raw_msg)
+    except Exception:
+        mail = email.message_from_string(raw_msg.encode("utf-8").decode("ascii", "ignore"))
+    contents = []
+    for part in mail.walk():
+        if part.get_content_type() in ('text/plain', 'text/html'):
+            charset = part.get_content_charset()
+            if charset != None:
+                if charset.upper() == "ISO-8859-8-I":
+                    charset = "ISO-8859-8"
+                payload_raw = part.get_payload()
+                encoding = part.get('content-transfer-encoding', '').lower()
+                if encoding == 'base64':
+                    payload_raw = payload_raw.decode('base64')
+                try:
+                    payload = quopri.decodestring(payload_raw).decode(charset)
+                except Exception:
+                    try:
+                        payload = quopri.decodestring(payload_raw).decode('utf-8')
+                    except:
+                        continue
+            else:  # assume ascii
+                try:
+                    payload = quopri.decodestring(part.get_payload()).decode('ascii')
+                except:
+                    payload = part.get_payload()
+            payload = payload.replace('\n', '<br>').replace("<br><br>","<br>")
+            contents.append(payload)
+        elif "image" in part.get_content_type():
+            img_str = '<img src="data:{0};{1},{2}"/>'.format(part.get_content_type(), part.get('content-transfer-encoding', '').lower(), part.get_payload())
+            contents.append(img_str)
+    return contents

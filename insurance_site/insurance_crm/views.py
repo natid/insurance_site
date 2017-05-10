@@ -21,8 +21,8 @@ def run_mail_scanner(request):
     MailScanner()
 
     #temporary to make sure that the API is called once a day
-    message = gmail_manager.create_message(config.MAIL_ADDRESS, "magenheim@gmail.com", "runned mail scanner", "")
-    gmail_manager.send_mail(config.MAIL_ADDRESS, message)
+    #message = gmail_manager.create_message(config.MAIL_ADDRESS, "magenheim@gmail.com", "runned mail scanner", "")
+    #gmail_manager.send_mail(config.MAIL_ADDRESS, message)
 
     return HttpResponse("OK")
 
