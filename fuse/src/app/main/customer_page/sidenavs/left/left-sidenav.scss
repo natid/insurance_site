@@ -98,7 +98,16 @@
         }
     }
     .disabled-company {
-        color: gray;
-        font-style: italic;
+        background: repeating-linear-gradient(
+                -45deg,
+                #bbb,
+                #bbb 0px,
+                #fff 1px,
+                #fff 20px
+                );
+        h3 {
+            font-style: italic;
+            color: red;
+        }
     }      
 }

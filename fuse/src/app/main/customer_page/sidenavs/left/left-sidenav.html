@@ -55,15 +55,15 @@
 
         <md-list-item class="contact md-3-line"
                       ng-repeat-start="company in vm.companies  | filter: {name: vm.search} "
-                      ng-click="vm.getCompanyData(company.id); company.open = !company.open">
+                      ng-click="vm.getCompanyData(company.id); company.open = !company.open" ng-class="{'disabled-company': !company.status}">
 
             <div class="avatar-wrapper">
-                <img ng-src="assets/images/companies/{{company.id}}.png" class="md-avatar avatar" alt="{{contact.name}}"/>
+                <img ng-src="assets/images/companies/{{company.name}}.png" class="md-avatar avatar" alt="{{contact.name}}"/>
                 <i class="icon icon- s16 status" ng-class="contact.status"></i>
             </div>
 
             <div class="md-list-item-text">
-                <h3 class="name" ng-class="{'disabled-company': !company.status}" style="text-align: right">{{company.name}}</h3>
+                <h3 class="name" style="text-align: right">{{company.name}}</h3>
                 <p class="last-message text-truncate">{{company.email}}</p>
             </div>
 
@@ -78,7 +78,7 @@
                     ng-click="vm.updateMailContent(data)">
 
             <div class="md-list-item-text">
-                <p class="name" style="text-align: right">מייל מספר {{$index}}</p>
+                <p class="name" style="text-align: right">מייל מספר {{$index + 1}}</p>
             </div>
 
             <md-divider></md-divider>

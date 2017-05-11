@@ -35,15 +35,12 @@
                         .avatar {
                             margin-right: 16px;
                         }
-
-                        .chat-contact-name {
-
-                        }
                     }
                 }
 
                 #chat-content {
                     background: transparent;
+                    overflow: auto;
 
                     .message-row {
 

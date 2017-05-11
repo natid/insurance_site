@@ -50,11 +50,12 @@
         }
 
         vm.updateMailContent = function(data) {
-            if (data && data.text) {
+            var mailContent = $('#chat-content')[0];
+            if (data && data.text != undefined) {
                 vm.currentMailData = data;
-                var mailContent = $('#chat-content')[0];
                 mailContent.innerHTML = data.text;
             } else {
+                vm.currentMailData = true;
                 mailContent.innerHTML = "טעינת המייל נכשלה";
             }
         }
