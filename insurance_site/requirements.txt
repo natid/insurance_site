@@ -40,7 +40,7 @@ python-dateutil==2.6.0
 python-slugify==1.2.1
 PyYAML==3.12
 requests==2.13.0
-rsa==3.4.2
+rsa==4.7
 s3transfer==0.1.10
 simplegeneric==0.8.1
 six==1.10.0
