@@ -50,7 +50,7 @@ traitlets==4.3.1
 troposphere==1.9.2
 Unidecode==0.4.20
 uritemplate==3.0.0
-urllib3==1.20
+urllib3==1.26.5
 virtualenv==15.1.0
 wcwidth==0.1.7
 Werkzeug==0.12
